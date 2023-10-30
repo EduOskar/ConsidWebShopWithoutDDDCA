@@ -308,10 +308,10 @@ namespace ConsidWebShop.Api.Data
                 Name = "Shoes"
             });
         }
-        public DbSet<Cart> carts { get; set; }
-        public DbSet<CartItem> cartItems { get; set; }
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<ProductCategory> productCategories { get; set; }
-        public DbSet<User> users { get; set; }
+        public DbSet<ProductCategory> ProductCategories { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

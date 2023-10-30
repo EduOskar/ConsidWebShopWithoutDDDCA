@@ -1,5 +1,6 @@
 ﻿using CondisWebshop.Web.Services.Contracts;
 using ConsidWebShop.Models.Dtos;
+using System.Net.Http;
 using System.Net.Http.Json;
 
 namespace CondisWebshop.Web.Services
@@ -17,17 +18,23 @@ namespace CondisWebshop.Web.Services
             try
             {
                 var response = await _httpClient.PostAsJsonAsync<CartItemToAddDto>("api/ShoppingCart", cartItemToAddDto);
+
                 if (response.IsSuccessStatusCode)
                 {
                     if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
                     {
                         return default(CartItemDto);
                     }
+
                     return await response.Content.ReadFromJsonAsync<CartItemDto>();
+
                 }
-                var message = await response.Content.ReadAsStringAsync();
-                throw new Exception($"Http status: {response.StatusCode} Message -{message}");
-                
+                else
+                {
+                    var message = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Http status:{response.StatusCode} Message -{message}");
+                }
+
             }
             catch (Exception)
             {
@@ -40,24 +47,29 @@ namespace CondisWebshop.Web.Services
         {
             try
             {
-                var response = await _httpClient.GetAsync($"api/{userId}/GetItems");
+                var response = await _httpClient.GetAsync($"api/ShoppingCart/{userId}/GetItems");
+
                 if (response.IsSuccessStatusCode)
                 {
                     if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
                     {
-                        return Enumerable.Empty<CartItemDto>();
+                        return Enumerable.Empty<CartItemDto>().ToList();
                     }
-                    return await response.Content.ReadFromJsonAsync<IEnumerable<CartItemDto>>();
+                    return await response.Content.ReadFromJsonAsync<List<CartItemDto>>();
                 }
-                var message = await response.Content.ReadAsStringAsync();
-                throw new Exception($"Http status code: {response.StatusCode} Message: {message}");
+                else
+                {
+                    var message = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Http status code: {response.StatusCode} Message: {message}");
+                }
+
             }
             catch (Exception)
             {
 
                 throw;
             }
-        
+
         }
     }
 }

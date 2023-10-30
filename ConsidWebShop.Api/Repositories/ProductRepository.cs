@@ -15,13 +15,13 @@ namespace ConsidWebShop.Api.Repositories
         }
         public async Task<IEnumerable<ProductCategory>> GetCategories()
         {
-            var categories = await _dbContext.productCategories.ToListAsync();
+            var categories = await _dbContext.ProductCategories.ToListAsync();
             return categories;
         }
 
         public async Task<ProductCategory> GetCategory(int id)
         {
-            var category = await _dbContext.productCategories.SingleOrDefaultAsync(x=>x.Id == id);
+            var category = await _dbContext.ProductCategories.SingleOrDefaultAsync(x=>x.Id == id);
 
             return category;
         }

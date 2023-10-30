@@ -24,11 +24,11 @@ namespace ConsidWebShop.Api.Controllers
 
         [HttpGet]
         [Route("{userId}/GetItems")]
-        public async Task<ActionResult<IEnumerable<CartItemDto>>> GetItems(int id)
+        public async Task<ActionResult<IEnumerable<CartItemDto>>> GetItems(int userId)
         {
             try
             {
-                var cartItems = await _shoppingCartRepository.GetItems(id);
+                var cartItems = await _shoppingCartRepository.GetItems(userId);
                 if (cartItems == null)
                 {
                     return NoContent();
@@ -52,7 +52,7 @@ namespace ConsidWebShop.Api.Controllers
             }
         }
 
-        [HttpGet("id:int")]
+        [HttpGet("Id:int")]
         public async Task<ActionResult<CartItemDto>> GetItem(int id)
         {
             try

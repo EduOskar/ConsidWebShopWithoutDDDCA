@@ -14,10 +14,13 @@ namespace CondisWebshop.Web.Components.Pages
 
         [Inject]
         public IShoppingCartService ShoppingCartService { get; set; }
+        
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
 
         public ProductDto Product { get; set; }
 
-        public string ErrorMessage { get; set; }
+        public string? ErrorMessage { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -37,6 +40,7 @@ namespace CondisWebshop.Web.Components.Pages
             try
             {
                 var cartItemDto = await ShoppingCartService.AddItem(cartItemToAddDto);
+                NavigationManager.NavigateTo("/ShoppingCart");
             }
             catch (Exception)
             {

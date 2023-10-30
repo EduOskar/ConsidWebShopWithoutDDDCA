@@ -17,7 +17,7 @@ namespace ConsidWebShop.Api.Repositories
 
         private async Task<bool> CartItemExist(int cartId, int productId)
         {
-            return await _dbContext.cartItems.AnyAsync(c => c.CartId == cartId &&
+            return await _dbContext.CartItems.AnyAsync(c => c.CartId == cartId &&
                                                         c.ProductId == productId);
         }
 
@@ -36,7 +36,7 @@ namespace ConsidWebShop.Api.Repositories
                                   }).SingleOrDefaultAsync();
                 if (item != null)
                 {
-                    var result = await _dbContext.cartItems.AddAsync(item);
+                    var result = await _dbContext.CartItems.AddAsync(item);
                     await _dbContext.SaveChangesAsync();
                     return result.Entity;
                 }
@@ -52,8 +52,8 @@ namespace ConsidWebShop.Api.Repositories
 
         public async Task<CartItem> GetItem(int id)
         {
-            return await (from cart in _dbContext.carts
-                          join cartItem in _dbContext.cartItems
+            return await (from cart in _dbContext.Carts
+                          join cartItem in _dbContext.CartItems
                           on cart.Id equals cartItem.CartId
                           where cartItem.Id == id
                           select new CartItem
@@ -61,14 +61,14 @@ namespace ConsidWebShop.Api.Repositories
                               Id = cartItem.Id,
                               ProductId = cartItem.ProductId,
                               Qty = cartItem.Qty,
-                              CartId = cartItem.CartId,
+                              CartId = cartItem.CartId
                           }).SingleOrDefaultAsync();
         }
 
         public async Task<IEnumerable<CartItem>> GetItems(int UserId)
         {
-            return await (from cart in _dbContext.carts
-                          join cartItem in _dbContext.cartItems
+            return await (from cart in _dbContext.Carts
+                          join cartItem in _dbContext.CartItems
                           on cart.Id equals cartItem.CartId
                           where cart.UserId == UserId
                           select new CartItem
