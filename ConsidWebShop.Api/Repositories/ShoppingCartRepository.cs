@@ -45,9 +45,16 @@ namespace ConsidWebShop.Api.Repositories
             return null;
         }
 
-        public Task<CartItem> DeleteItem(int id)
+        public async Task<CartItem> DeleteItem(int id)
         {
-            throw new NotImplementedException();
+            var item = await _dbContext.CartItems.FindAsync(id);
+
+            if (item != null)
+            {
+                _dbContext.CartItems.Remove(item);
+                await _dbContext.SaveChangesAsync();
+            }
+            return item;
         }
 
         public async Task<CartItem> GetItem(int id)

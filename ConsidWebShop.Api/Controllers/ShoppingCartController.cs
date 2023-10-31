@@ -52,7 +52,7 @@ namespace ConsidWebShop.Api.Controllers
             }
         }
 
-        [HttpGet("Id:int")]
+        [HttpGet("{Id:int}")]
         public async Task<ActionResult<CartItemDto>> GetItem(int id)
         {
             try
@@ -106,6 +106,37 @@ namespace ConsidWebShop.Api.Controllers
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult<CartItemDto>> DeleteItem(int id)
+        {
+            try
+            {
+                var cartItem = await _shoppingCartRepository.DeleteItem(id);
+                if (cartItem == null)
+                {
+                    return NotFound();
+                }
+
+                var product = await _productRepository.GetItem(cartItem.ProductId);
+
+                if (product == null)
+                {
+                    return NotFound();
+                }
+
+                var cartItemDto = cartItem.ConvertToDo(product);
+
+                return Ok(cartItemDto);
+
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message); 
+            }
+            
         }
 
     }

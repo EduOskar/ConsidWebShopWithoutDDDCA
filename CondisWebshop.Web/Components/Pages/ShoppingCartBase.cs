@@ -9,7 +9,7 @@ namespace CondisWebshop.Web.Components.Pages
         [Inject]
         public IShoppingCartService ShoppingCartService { get; set; }
 
-        public IEnumerable<CartItemDto> ShoppingCartItems { get; set; }
+        public List<CartItemDto> ShoppingCartItems { get; set; }
 
         public string ErrorMessage { get; set; }
 
@@ -24,6 +24,33 @@ namespace CondisWebshop.Web.Components.Pages
 
                 ErrorMessage = ex.Message;
             }
+        }
+
+        protected async Task DeleteCartItem_click(int id)
+        {
+            try
+            {
+                var cartItemDto = await ShoppingCartService.DeleteItem(id);
+
+                RemoveCartItem(id);
+            }
+            catch (Exception)
+            {
+                //logg exception
+                throw;
+            }
+            
+        }
+        private CartItemDto GetCartItem(int id)
+        {
+            return ShoppingCartItems.FirstOrDefault(x => x.Id == id);
+        }
+        private void RemoveCartItem(int id)
+        {
+            var cartItemDo = GetCartItem(id);
+
+            ShoppingCartItems.Remove(cartItemDo);
+
         }
     }
 }
