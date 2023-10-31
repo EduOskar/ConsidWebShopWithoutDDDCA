@@ -1,4 +1,5 @@
 ﻿using ConsidWebShop.Api.Data;
+using ConsidWebShop.Api.Entities;
 using ConsidWebShop.Api.Extensions;
 using ConsidWebShop.Api.Repositories;
 using ConsidWebShop.Api.Repositories.Contracts;
@@ -15,7 +16,7 @@ namespace ConsidWebShop.Api.Controllers
         private readonly IShoppingCartRepository _shoppingCartRepository;
         private readonly IProductRepository _productRepository;
 
-        public ShoppingCartController(IShoppingCartRepository shoppingCartRepository, 
+        public ShoppingCartController(IShoppingCartRepository shoppingCartRepository,
                                         IProductRepository productRepository)
         {
             _shoppingCartRepository = shoppingCartRepository;
@@ -134,9 +135,31 @@ namespace ConsidWebShop.Api.Controllers
             catch (Exception ex)
             {
 
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message); 
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
-            
+
+        }
+        [HttpPatch("{id:int}")]
+        public async Task<ActionResult<CartItemDto>> UpdateQty(int id, CartItemQtyUpdateDto QtyUpdate)
+        {
+            try
+            {
+                var itemQty = await _shoppingCartRepository.UpdateQty(id, QtyUpdate);
+                if (itemQty == null)
+                {
+                    return NotFound();
+                }
+                var product = await _productRepository.GetItem(itemQty.ProductId);
+
+                var cartItemDto = itemQty.ConvertToDo(product);
+
+                return Ok(cartItemDto);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
     }

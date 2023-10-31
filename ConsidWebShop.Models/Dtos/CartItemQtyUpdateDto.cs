@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsidWebShop.Models.Dtos
 {
-    public interface CartItemQtyUpdateDto
+    public class CartItemQtyUpdateDto
     {
         public int CartItemId { get; set; }
         public int Qty { get; set; }
