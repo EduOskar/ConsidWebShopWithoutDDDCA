@@ -144,14 +144,14 @@ namespace ConsidWebShop.Api.Controllers
         {
             try
             {
-                var itemQty = await _shoppingCartRepository.UpdateQty(id, QtyUpdate);
-                if (itemQty == null)
+                var itemToUpdate = await _shoppingCartRepository.UpdateQty(id, QtyUpdate);
+                if (itemToUpdate == null)
                 {
                     return NotFound();
                 }
-                var product = await _productRepository.GetItem(itemQty.ProductId);
+                var product = await _productRepository.GetItem(itemToUpdate.ProductId);
 
-                var cartItemDto = itemQty.ConvertToDo(product);
+                var cartItemDto = itemToUpdate.ConvertToDo(product);
 
                 return Ok(cartItemDto);
             }

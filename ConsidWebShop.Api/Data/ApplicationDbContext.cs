@@ -20,7 +20,7 @@ namespace ConsidWebShop.Api.Data
                 Name = "Glossier - Beauty Kit",
                 Description = "A kit provided by Glossier, containing skin care, hair care and makeup products",
                 ImageURL = "/Images/Beauty/Beauty1.png",
-                Price = 100,
+                Price = 1000,
                 Qty = 100,
                 CategoryId = 1
 
@@ -31,7 +31,7 @@ namespace ConsidWebShop.Api.Data
                 Name = "Curology - Skin Care Kit",
                 Description = "A kit provided by Curology, containing skin care products",
                 ImageURL = "/Images/Beauty/Beauty2.png",
-                Price = 50,
+                Price = 500,
                 Qty = 45,
                 CategoryId = 1
 
@@ -42,7 +42,7 @@ namespace ConsidWebShop.Api.Data
                 Name = "Cocooil - Organic Coconut Oil",
                 Description = "A kit provided by Curology, containing skin care products",
                 ImageURL = "/Images/Beauty/Beauty3.png",
-                Price = 20,
+                Price = 200,
                 Qty = 30,
                 CategoryId = 1
 
@@ -53,7 +53,7 @@ namespace ConsidWebShop.Api.Data
                 Name = "Schwarzkopf - Hair Care and Skin Care Kit",
                 Description = "A kit provided by Schwarzkopf, containing skin care and hair care products",
                 ImageURL = "/Images/Beauty/Beauty4.png",
-                Price = 50,
+                Price = 500,
                 Qty = 60,
                 CategoryId = 1
 
@@ -64,7 +64,7 @@ namespace ConsidWebShop.Api.Data
                 Name = "Skin Care Kit",
                 Description = "Skin Care Kit, containing skin care and hair care products",
                 ImageURL = "/Images/Beauty/Beauty5.png",
-                Price = 30,
+                Price = 300,
                 Qty = 85,
                 CategoryId = 1
 
@@ -76,7 +76,7 @@ namespace ConsidWebShop.Api.Data
                 Name = "Air Pods",
                 Description = "Air Pods - in-ear wireless headphones",
                 ImageURL = "/Images/Electronic/Electronics1.png",
-                Price = 100,
+                Price = 1000,
                 Qty = 120,
                 CategoryId = 3
 
@@ -87,7 +87,7 @@ namespace ConsidWebShop.Api.Data
                 Name = "On-ear Golden Headphones",
                 Description = "On-ear Golden Headphones - these headphones are not wireless",
                 ImageURL = "/Images/Electronic/Electronics2.png",
-                Price = 40,
+                Price = 499,
                 Qty = 200,
                 CategoryId = 3
 
@@ -98,7 +98,7 @@ namespace ConsidWebShop.Api.Data
                 Name = "On-ear Black Headphones",
                 Description = "On-ear Black Headphones - these headphones are not wireless",
                 ImageURL = "/Images/Electronic/Electronics3.png",
-                Price = 40,
+                Price = 499,
                 Qty = 300,
                 CategoryId = 3
 
@@ -109,7 +109,7 @@ namespace ConsidWebShop.Api.Data
                 Name = "Sennheiser Digital Camera with Tripod",
                 Description = "Sennheiser Digital Camera - High quality digital camera provided by Sennheiser - includes tripod",
                 ImageURL = "/Images/Electronic/Electronics4.png",
-                Price = 600,
+                Price = 5999,
                 Qty = 20,
                 CategoryId = 3
 
@@ -120,7 +120,7 @@ namespace ConsidWebShop.Api.Data
                 Name = "Canon Digital Camera",
                 Description = "Canon Digital Camera - High quality digital camera provided by Canon",
                 ImageURL = "/Images/Electronic/Electronics5.png",
-                Price = 500,
+                Price = 6999,
                 Qty = 15,
                 CategoryId = 3
 
@@ -131,7 +131,7 @@ namespace ConsidWebShop.Api.Data
                 Name = "Nintendo Gameboy",
                 Description = "Gameboy - Provided by Nintendo",
                 ImageURL = "/Images/Electronic/Electronics6.png",
-                Price = 100,
+                Price = 1050,
                 Qty = 60,
                 CategoryId = 3
             });
@@ -142,7 +142,7 @@ namespace ConsidWebShop.Api.Data
                 Name = "Black Leather Office Chair",
                 Description = "Very comfortable black leather office chair",
                 ImageURL = "/Images/Furniture/Furniture1.png",
-                Price = 50,
+                Price = 550,
                 Qty = 212,
                 CategoryId = 2
             });
@@ -153,7 +153,7 @@ namespace ConsidWebShop.Api.Data
                 Name = "Pink Leather Office Chair",
                 Description = "Very comfortable pink leather office chair",
                 ImageURL = "/Images/Furniture/Furniture2.png",
-                Price = 50,
+                Price = 500,
                 Qty = 112,
                 CategoryId = 2
             });
@@ -163,7 +163,7 @@ namespace ConsidWebShop.Api.Data
                 Name = "Lounge Chair",
                 Description = "Very comfortable lounge chair",
                 ImageURL = "/Images/Furniture/Furniture3.png",
-                Price = 70,
+                Price = 700,
                 Qty = 90,
                 CategoryId = 2
             });
@@ -173,7 +173,7 @@ namespace ConsidWebShop.Api.Data
                 Name = "Silver Lounge Chair",
                 Description = "Very comfortable Silver lounge chair",
                 ImageURL = "/Images/Furniture/Furniture4.png",
-                Price = 120,
+                Price = 1200,
                 Qty = 95,
                 CategoryId = 2
             });
@@ -183,7 +183,7 @@ namespace ConsidWebShop.Api.Data
                 Name = "Porcelain Table Lamp",
                 Description = "White and blue Porcelain Table Lamp",
                 ImageURL = "/Images/Furniture/Furniture6.png",
-                Price = 15,
+                Price = 150,
                 Qty = 100,
                 CategoryId = 2
             });
@@ -193,7 +193,7 @@ namespace ConsidWebShop.Api.Data
                 Name = "Office Table Lamp",
                 Description = "Office Table Lamp",
                 ImageURL = "/Images/Furniture/Furniture7.png",
-                Price = 20,
+                Price = 200,
                 Qty = 73,
                 CategoryId = 2
             });
@@ -204,7 +204,7 @@ namespace ConsidWebShop.Api.Data
                 Name = "Puma Sneakers",
                 Description = "Comfortable Puma Sneakers in most sizes",
                 ImageURL = "/Images/Shoes/Shoes1.png",
-                Price = 100,
+                Price = 1000,
                 Qty = 50,
                 CategoryId = 4
             });
@@ -214,7 +214,7 @@ namespace ConsidWebShop.Api.Data
                 Name = "Colorful Trainers",
                 Description = "Colorful trainsers - available in most sizes",
                 ImageURL = "/Images/Shoes/Shoes2.png",
-                Price = 150,
+                Price = 1500,
                 Qty = 60,
                 CategoryId = 4
             });
@@ -224,7 +224,7 @@ namespace ConsidWebShop.Api.Data
                 Name = "Blue Nike Trainers",
                 Description = "Blue Nike Trainers - available in most sizes",
                 ImageURL = "/Images/Shoes/Shoes3.png",
-                Price = 200,
+                Price = 2000,
                 Qty = 70,
                 CategoryId = 4
             });
@@ -234,7 +234,7 @@ namespace ConsidWebShop.Api.Data
                 Name = "Colorful Hummel Trainers",
                 Description = "Colorful Hummel Trainers - available in most sizes",
                 ImageURL = "/Images/Shoes/Shoes4.png",
-                Price = 120,
+                Price = 1200,
                 Qty = 120,
                 CategoryId = 4
             });
@@ -244,7 +244,7 @@ namespace ConsidWebShop.Api.Data
                 Name = "Red Nike Trainers",
                 Description = "Red Nike Trainers - available in most sizes",
                 ImageURL = "/Images/Shoes/Shoes5.png",
-                Price = 200,
+                Price = 2000,
                 Qty = 100,
                 CategoryId = 4
             });
@@ -254,7 +254,7 @@ namespace ConsidWebShop.Api.Data
                 Name = "Birkenstock Sandles",
                 Description = "Birkenstock Sandles - available in most sizes",
                 ImageURL = "/Images/Shoes/Shoes6.png",
-                Price = 50,
+                Price = 500,
                 Qty = 150,
                 CategoryId = 4
             });
