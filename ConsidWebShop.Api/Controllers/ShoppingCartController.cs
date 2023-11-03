@@ -53,7 +53,7 @@ namespace ConsidWebShop.Api.Controllers
             }
         }
 
-        [HttpGet("{Id:int}")]
+        [HttpGet("{Id:int}/GetItem")]
         public async Task<ActionResult<CartItemDto>> GetItem(int id)
         {
             try

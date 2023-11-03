@@ -78,7 +78,5 @@ namespace CondisWebshop.Web.Services
                 new Uri("https://localhost:7012/");
             _httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
         }
-
-      
     }
 }

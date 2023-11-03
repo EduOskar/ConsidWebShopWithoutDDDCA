@@ -17,6 +17,9 @@ namespace CondisWebshop.Web.Services
             _httpClient = httpClient;
             ConfigureClient();
         }
+
+       
+
         public async Task<CartItemDto> AddItem(CartItemToAddDto cartItemToAddDto)
         {
             try
