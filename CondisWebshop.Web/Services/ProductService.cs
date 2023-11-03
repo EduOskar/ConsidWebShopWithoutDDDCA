@@ -11,6 +11,7 @@ namespace CondisWebshop.Web.Services
         public ProductService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            ConfigureClient();
         }
 
         public async Task<ProductDto> GetItem(int id)
@@ -70,6 +71,12 @@ namespace CondisWebshop.Web.Services
 
                 throw;
             }
+        }
+        private void ConfigureClient()
+        {
+            _httpClient.BaseAddress =
+                new Uri("https://localhost:7012/");
+            _httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
         }
 
       

@@ -9,8 +9,8 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddHttpClient();
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7012/") });
-builder.Services.AddHttpClient<IProductService, ProductService>().ConfigureHttpClient(x => x.BaseAddress = new Uri("https://localhost:7012/"));
-builder.Services.AddHttpClient<IShoppingCartService, ShoppingCartService>().ConfigureHttpClient(x => x.BaseAddress = new Uri("https://localhost:7012/"));
+//builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7012/") });
+builder.Services.AddHttpClient<IProductService, ProductService>();
+builder.Services.AddHttpClient<IShoppingCartService, ShoppingCartService>();
 
 await builder.Build().RunAsync();
