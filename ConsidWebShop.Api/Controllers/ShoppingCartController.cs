@@ -54,11 +54,11 @@ namespace ConsidWebShop.Api.Controllers
         }
 
         [HttpGet("{Id:int}/GetItem")]
-        public async Task<ActionResult<CartItemDto>> GetItem(int id)
+        public async Task<ActionResult<CartItemDto>> GetItem(int Id)
         {
             try
             {
-                var cartItem = await _shoppingCartRepository.GetItem(id);
+                var cartItem = await _shoppingCartRepository.GetItem(Id);
                 if (cartItem == null)
                 {
                     return NotFound();

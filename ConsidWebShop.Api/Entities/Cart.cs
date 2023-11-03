@@ -1,4 +1,8 @@
-﻿namespace ConsidWebShop.Api.Entities
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+namespace ConsidWebShop.Api.Entities
 {
     public class Cart
     {

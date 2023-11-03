@@ -17,8 +17,8 @@ namespace CondisWebshop.Web.Components.Pages
         {
             try
             {
-            Products = await ProductService.GetItems();
-        }
+                Products = await ProductService.GetItems();
+            }
             catch (Exception ex)
             {
 

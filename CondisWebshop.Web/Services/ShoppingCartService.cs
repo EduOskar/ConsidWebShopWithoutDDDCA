@@ -97,6 +97,8 @@ namespace CondisWebshop.Web.Services
             }
 
         }
+
+
         public async Task<CartItemDto> UpdateQty(CartItemQtyUpdateDto cartItemQtyUpdateDto)
         {
             try
