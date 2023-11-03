@@ -68,5 +68,25 @@ namespace ConsidWebShop.Api.Controllers
             }
 
         }
+        [HttpPost]
+        public async Task<ActionResult<ProductDto>> CreateItem([FromBody] ProductDto productDto)
+        {
+            try
+            {
+                var NewProduct = await _productRepository.AddItem(productDto);
+                if (NewProduct == null)
+                {
+                    return Ok(NewProduct);
+                    
+                }
+                return NoContent();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

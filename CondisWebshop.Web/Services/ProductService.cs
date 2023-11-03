@@ -34,9 +34,7 @@ namespace CondisWebshop.Web.Services
                     var message = await response.Content.ReadAsStringAsync();
                     throw new Exception(message);
                 }
-                
 
-                
             }
             catch (Exception)
             {
