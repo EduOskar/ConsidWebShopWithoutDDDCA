@@ -69,23 +69,43 @@ namespace ConsidWebShop.Api.Controllers
 
         }
         [HttpPost]
-        public async Task<ActionResult<ProductDto>> CreateItem([FromBody] ProductDto productDto)
+        public async Task<ActionResult<Product>> CreateItem([FromBody] ProductToAddDto productToAddDto)
         {
             try
             {
-                var NewProduct = await _productRepository.AddItem(productDto);
-                if (NewProduct == null)
+                var newProduct = await _productRepository.AddItem(productToAddDto);
+                if (newProduct == null)
                 {
-                    return Ok(NewProduct);
-                    
+                    return NoContent();
                 }
-                return NoContent();
-
+                var productDto = newProduct.CategoryId;
+                return CreatedAtAction("CreateItem", productDto);
             }
             catch (Exception)
             {
 
-                throw;
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                                                "Error retrieving data from the database");
+            }
+        }
+        [HttpDelete]
+        [Route("DeleteItem")]
+        public async Task<ActionResult<ProductDto>> DeleteItem(int id)
+        {
+            try
+            {
+                var product = await _productRepository.DeleteProduct(id);
+                if (product == null)
+                {
+                    return NotFound();
+                }
+                return NoContent();
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                                                "Error retrieving data from the database");
             }
         }
     }

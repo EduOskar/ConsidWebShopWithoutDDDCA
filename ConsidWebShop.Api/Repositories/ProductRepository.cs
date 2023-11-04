@@ -1,5 +1,6 @@
 ﻿using ConsidWebShop.Api.Data;
 using ConsidWebShop.Api.Entities;
+using ConsidWebShop.Api.Extensions;
 using ConsidWebShop.Api.Repositories.Contracts;
 using ConsidWebShop.Models.Dtos;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -39,40 +40,43 @@ namespace ConsidWebShop.Api.Repositories
             var product = await _dbContext.Products.FindAsync(id);
             return product;
         }
-        private async Task<bool> ProductExist(int ProductId)
+        public async Task<Product> AddItem(ProductToAddDto productToAddDto)
         {
-            return await _dbContext.Products.AnyAsync(x => x.Id == ProductId);
-        }
-        public async Task<Product> AddItem(ProductDto productDto)
-        {
-            if (await ProductExist(productDto.Id) == false)
-            {
-                var item = await (from product in _dbContext.Products
-                            where product.Id == productDto.Id
-                            select new Product
-                            {
-                                Id = productDto.Id,
-                                Name = productDto.Name,
-                                Description = productDto.Description,
-                                ImageURL = productDto.ImageURL,
-                                Price = productDto.Price,
-                                Qty = productDto.Qty,
-                                CategoryId = productDto.CategoryId,
 
-                            }).SingleOrDefaultAsync();
-                if (item != null)
-                {
-                    var result = await _dbContext.Products.AddAsync(item);
-                    _dbContext.SaveChanges();
-                    return result.Entity;
-                }
+            var item = await (from product in _dbContext.Products
+                              where product.CategoryId == productToAddDto.CategoryId
+                              
+                              select new Product
+                              {
+                                  Name = productToAddDto.Name,
+                                  Description = productToAddDto.Description,
+                                  ImageURL = productToAddDto.ImageURL,
+                                  Price = productToAddDto.Price,
+                                  Qty = productToAddDto.Qty,
+                                  CategoryId = productToAddDto.CategoryId,
+                              }).FirstOrDefaultAsync();
+            if (item != null)
+            {
+                var result = await _dbContext.Products.AddAsync(item);
+                await _dbContext.SaveChangesAsync();
+                return result.Entity;
             }
+
+
+
+
             return null;
         }
 
-        public Task<Product> RemoveProduct(int Id)
+        public async Task<Product> DeleteProduct(int id)
         {
-            throw new NotImplementedException();
+            var item = await _dbContext.Products.FirstOrDefaultAsync(x => x.Id == id);
+            if (item != null)
+            {
+                _dbContext.Products.Remove(item);
+                await _dbContext.SaveChangesAsync();
+            }
+            return (item);
         }
     }
 }

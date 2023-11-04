@@ -40,6 +40,19 @@ namespace ConsidWebShop.Api.Extensions
                 CategoryName = productCategory.Name
             };
         }
+        public static ProductToAddDto ConvertToDto(this Product product)
+        {
+            return new ProductToAddDto
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                ImageURL = product.ImageURL,
+                Price = product.Price,
+                Qty = product.Qty,
+                CategoryId = product.CategoryId,
+            };
+        }
 
         public static IEnumerable<CartItemDto> ConvertToDo(this IEnumerable<CartItem> cartItems,
                                                             IEnumerable<Product> products)
