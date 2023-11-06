@@ -1,4 +1,5 @@
-﻿using CondisWebshop.Web.Services.Contracts;
+﻿using CondisWebshop.Web.Components.Pages;
+using CondisWebshop.Web.Services.Contracts;
 using ConsidWebShop.Models.Dtos;
 using System.Net.Http.Json;
 
@@ -13,6 +14,12 @@ namespace CondisWebshop.Web.Services
             _httpClient = httpClient;
             ConfigureClient();
         }
+        private void ConfigureClient()
+        {
+            _httpClient.BaseAddress =
+                new Uri("https://localhost:7012/");
+            _httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+        }
 
         public async Task<ProductDto> GetItem(int id)
         {
@@ -24,7 +31,7 @@ namespace CondisWebshop.Web.Services
                 {
                     if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
                     {
-                        return default(ProductDto);
+                        return default;
                     }
 
                     return await response.Content.ReadFromJsonAsync<ProductDto>();
@@ -70,11 +77,32 @@ namespace CondisWebshop.Web.Services
                 throw;
             }
         }
-        private void ConfigureClient()
+   
+        public async Task<Products> AddProduct(ProductToAddDto addProduct)
         {
-            _httpClient.BaseAddress =
-                new Uri("https://localhost:7012/");
-            _httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync("api/ProductApi", addProduct);
+                if (response.IsSuccessStatusCode)
+                {
+                    if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+                    {
+                        return default;
+                    }
+                    return await response.Content.ReadFromJsonAsync<Products>();
+                }
+                else
+                {
+                    var message = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Http status:{response.StatusCode} Message -{message}");
+                }
+               
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

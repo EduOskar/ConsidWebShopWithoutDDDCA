@@ -40,7 +40,7 @@ namespace ConsidWebShop.Api.Repositories
             var product = await _dbContext.Products.FindAsync(id);
             return product;
         }
-        public async Task<Product> AddItem(ProductToAddDto productToAddDto)
+        public async Task<Product> AddProduct(ProductToAddDto productToAddDto)
         {
 
             var item = await (from product in _dbContext.Products

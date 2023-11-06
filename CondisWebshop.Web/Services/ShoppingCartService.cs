@@ -18,7 +18,12 @@ namespace CondisWebshop.Web.Services
             ConfigureClient();
         }
 
-       
+        private void ConfigureClient()
+        {
+            _httpClient.BaseAddress =
+                new Uri("https://localhost:7012/");
+            _httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+        }
 
         public async Task<CartItemDto> AddItem(CartItemToAddDto cartItemToAddDto)
         {
@@ -30,7 +35,7 @@ namespace CondisWebshop.Web.Services
                 {
                     if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
                     {
-                        return default(CartItemDto);
+                        return default;
                     }
 
                     return await response.Content.ReadFromJsonAsync<CartItemDto>();
@@ -60,7 +65,7 @@ namespace CondisWebshop.Web.Services
                 {
                     return await response.Content.ReadFromJsonAsync<CartItemDto>();
                 }
-                return default(CartItemDto);
+                return default;
             }
             catch (Exception)
             {
@@ -121,11 +126,6 @@ namespace CondisWebshop.Web.Services
             }
 
         }
-        private void ConfigureClient()
-        {
-            _httpClient.BaseAddress =
-                new Uri("https://localhost:7012/");
-            _httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
-        }
+      
     }
 }

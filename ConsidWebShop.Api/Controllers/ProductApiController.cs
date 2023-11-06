@@ -69,17 +69,18 @@ namespace ConsidWebShop.Api.Controllers
 
         }
         [HttpPost]
-        public async Task<ActionResult<Product>> CreateItem([FromBody] ProductToAddDto productToAddDto)
+        [Route("CreateProduct")]
+        public async Task<ActionResult<Product>> CreateProduct([FromBody] ProductToAddDto productToAddDto)
         {
             try
             {
-                var newProduct = await _productRepository.AddItem(productToAddDto);
+                var newProduct = await _productRepository.AddProduct(productToAddDto);
                 if (newProduct == null)
                 {
                     return NoContent();
                 }
-                var productDto = newProduct.CategoryId;
-                return CreatedAtAction("CreateItem", productDto);
+                var ProductDto = newProduct.CategoryId;
+                return CreatedAtAction("CreateItem", ProductDto);
             }
             catch (Exception)
             {
