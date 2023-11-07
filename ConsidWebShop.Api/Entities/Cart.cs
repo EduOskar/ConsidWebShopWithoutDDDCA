@@ -10,5 +10,8 @@ namespace ConsidWebShop.Api.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public int UserId { get; set; }
+        public User User { get; set; } = new User();
+
+        public ICollection<Cart> Carts { get; set;} = new List<Cart>();
     }
 }
