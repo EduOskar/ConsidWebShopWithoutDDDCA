@@ -34,7 +34,7 @@ namespace ConsidWebShop.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Carts");
+                    b.ToTable("Carts", (string)null);
 
                     b.HasData(
                         new
@@ -69,7 +69,7 @@ namespace ConsidWebShop.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CartItems");
+                    b.ToTable("CartItems", (string)null);
                 });
 
             modelBuilder.Entity("ConsidWebShop.Api.Entities.Product", b =>
@@ -108,7 +108,7 @@ namespace ConsidWebShop.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
 
                     b.HasData(
                         new
@@ -358,7 +358,7 @@ namespace ConsidWebShop.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductCategories");
+                    b.ToTable("ProductCategories", (string)null);
 
                     b.HasData(
                         new
@@ -398,7 +398,7 @@ namespace ConsidWebShop.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
 
                     b.HasData(
                         new

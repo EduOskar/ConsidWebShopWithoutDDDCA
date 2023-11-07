@@ -70,6 +70,7 @@ namespace ConsidWebShop.Api.Controllers
         }
         [HttpPost]
         [Route("CreateProduct")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<Product>> CreateProduct([FromBody] ProductToAddDto productToAddDto)
         {
             try
@@ -79,8 +80,8 @@ namespace ConsidWebShop.Api.Controllers
                 {
                     return NoContent();
                 }
-                var ProductDto = newProduct.CategoryId;
-                return CreatedAtAction("CreateItem", ProductDto);
+                var productDto = newProduct.CategoryId;
+                return CreatedAtAction(nameof(CreateProduct), productDto);
             }
             catch (Exception)
             {
