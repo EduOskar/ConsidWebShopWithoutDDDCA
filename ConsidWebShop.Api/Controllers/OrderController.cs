@@ -21,7 +21,7 @@ public class OrderController : ControllerBase
         _productRepository = productRepository;
         _userRepositorycs = userRepositorycs;
     }
-    [HttpGet("{id:int}/GetOrderItem")]
+    [HttpGet("{userId:int}/GetOrderItem")]
     public async Task<ActionResult<IEnumerable<OrderItemDto>>> GetOrderItems(int userId)
     {
         try
@@ -44,8 +44,8 @@ public class OrderController : ControllerBase
         }
        
     }
-    [HttpGet("{id:int}/GetOrder")]
-    public async Task<ActionResult<OrderDto>> GetOrder(int userId)
+    [HttpGet("{userId:int}/GetOrder")]
+    public async Task<ActionResult<Order>> GetOrder(int userId)
     {
         try
         {
@@ -55,13 +55,7 @@ public class OrderController : ControllerBase
             {
                 return NotFound();
             }
-            //var user = await _userRepositorycs.GetUser(userId);
-            //if (user == null)
-            //{
-            //    return NotFound();
-            //}
-            var orderDto = order.ConvertToDto;
-            return Ok(orderDto);
+            return Ok(order);
         }
         catch (Exception)
         {

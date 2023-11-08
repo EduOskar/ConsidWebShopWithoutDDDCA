@@ -10,32 +10,26 @@ namespace CondisWebshop.Web.Services
 {
     public class ShoppingCartService : IShoppingCartService
     {
-        private readonly HttpClient _httpClient;
+        private readonly HttpClient httpClient;
+
+        public event Action<int> OnShoppingCartChanged;
 
         public ShoppingCartService(HttpClient httpClient)
         {
-            _httpClient = httpClient;
-            ConfigureClient();
-        }
-
-        private void ConfigureClient()
-        {
-            _httpClient.BaseAddress =
-                new Uri("https://localhost:7012/");
-            _httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+            this.httpClient = httpClient;
         }
 
         public async Task<CartItemDto> AddItem(CartItemToAddDto cartItemToAddDto)
         {
             try
             {
-                var response = await _httpClient.PostAsJsonAsync<CartItemToAddDto>("api/ShoppingCart", cartItemToAddDto);
+                var response = await httpClient.PostAsJsonAsync<CartItemToAddDto>("api/ShoppingCart", cartItemToAddDto);
 
                 if (response.IsSuccessStatusCode)
                 {
                     if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
                     {
-                        return default;
+                        return default(CartItemDto);
                     }
 
                     return await response.Content.ReadFromJsonAsync<CartItemDto>();
@@ -59,17 +53,17 @@ namespace CondisWebshop.Web.Services
         {
             try
             {
-                var response = await _httpClient.DeleteAsync($"api/ShoppingCart/{id}");
+                var response = await httpClient.DeleteAsync($"api/ShoppingCart/{id}");
 
                 if (response.IsSuccessStatusCode)
                 {
                     return await response.Content.ReadFromJsonAsync<CartItemDto>();
                 }
-                return default;
+                return default(CartItemDto);
             }
             catch (Exception)
             {
-                //log exception
+                //Log exception
                 throw;
             }
         }
@@ -78,7 +72,7 @@ namespace CondisWebshop.Web.Services
         {
             try
             {
-                var response = await _httpClient.GetAsync($"api/ShoppingCart/{userId}/GetItems");
+                var response = await httpClient.GetAsync($"api/ShoppingCart/{userId}/GetItems");
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -100,9 +94,15 @@ namespace CondisWebshop.Web.Services
 
                 throw;
             }
-
         }
 
+        public void RaiseEventOnShoppingCartChanged(int totalQty)
+        {
+            if (OnShoppingCartChanged != null)
+            {
+                OnShoppingCartChanged.Invoke(totalQty);
+            }
+        }
 
         public async Task<CartItemDto> UpdateQty(CartItemQtyUpdateDto cartItemQtyUpdateDto)
         {
@@ -111,21 +111,20 @@ namespace CondisWebshop.Web.Services
                 var jsonRequest = JsonConvert.SerializeObject(cartItemQtyUpdateDto);
                 var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json-patch+json");
 
-                var response = await _httpClient.PatchAsync($"api/ShoppingCart/{cartItemQtyUpdateDto.CartItemId}", content);
+                var response = await httpClient.PatchAsync($"api/ShoppingCart/{cartItemQtyUpdateDto.CartItemId}", content);
 
                 if (response.IsSuccessStatusCode)
                 {
                     return await response.Content.ReadFromJsonAsync<CartItemDto>();
                 }
                 return null;
+
             }
             catch (Exception)
             {
-
+                //Log exception
                 throw;
             }
-
         }
-      
     }
 }

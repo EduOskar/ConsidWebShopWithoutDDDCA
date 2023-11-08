@@ -5,7 +5,5 @@ namespace CondisWebshop.Web.Services.Contracts;
 
 public interface IOrderService
 {
-    Task<IEnumerable<ProductDto>> GetItems();
-
-    Task<ProductDto> GetItem(int id);
+    Task<List<OrderItemDto>> GetOrderItems(int userId);
 }

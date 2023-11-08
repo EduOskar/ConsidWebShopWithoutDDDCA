@@ -15,11 +15,11 @@ public class OrderRepository : IOrderRepository
     }
     public async Task<Order> GetOrder(int userId)
     {
-        var order = await _dbContext.Orders.FirstOrDefaultAsync(x => x.UserId == userId);
-        return order;
-                      
-    }
 
+        var order = await _dbContext.Orders.FindAsync(userId);
+        return order;
+
+    }
     public async Task<IEnumerable<OrderItem>> GetOrderItems(int userId)
     {
 

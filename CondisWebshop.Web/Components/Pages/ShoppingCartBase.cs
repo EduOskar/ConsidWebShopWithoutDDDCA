@@ -13,6 +13,7 @@ namespace CondisWebshop.Web.Components.Pages
         public IShoppingCartService ShoppingCartService { get; set; }
 
         public List<CartItemDto> ShoppingCartItems { get; set; }
+        public NavigationManager NavigationManager { get; set; }
 
         public string ErrorMessage { get; set; }
 
@@ -24,7 +25,7 @@ namespace CondisWebshop.Web.Components.Pages
             try
             {
                 ShoppingCartItems = await ShoppingCartService.GetItems(HardCoded.UserId); //Add in Users here 
-                CalculateCartSummaryTotals();
+                CartChanged();
             }
             catch (Exception ex)
             {
@@ -40,7 +41,7 @@ namespace CondisWebshop.Web.Components.Pages
                 var cartItemDto = await ShoppingCartService.DeleteItem(id);
 
                 RemoveCartItem(id);
-                CalculateCartSummaryTotals();
+                CartChanged();
 
                 await MakeUpdateQtyButtonVisible(id, false);
             }
@@ -77,7 +78,7 @@ namespace CondisWebshop.Web.Components.Pages
 
                     UpdateItemTotalPrice(returnredUpdateItemDto);
 
-                    CalculateCartSummaryTotals();
+                    CartChanged();
                     await MakeUpdateQtyButtonVisible(id, false);
 
                 }
@@ -132,6 +133,11 @@ namespace CondisWebshop.Web.Components.Pages
 
             ShoppingCartItems.Remove(cartItemDo);
 
+        }
+        private void CartChanged()
+        {
+            CalculateCartSummaryTotals();
+            ShoppingCartService.RaiseEventOnShoppingCartChanged(TotalQuantity);
         }
     }
 }

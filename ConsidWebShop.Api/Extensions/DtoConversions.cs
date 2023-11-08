@@ -97,12 +97,12 @@ public static class DtoConversions
         return (from orderItem in orderItems
                 join product in products
                 on orderItem.ProductId equals product.Id
-                
+
                 select new OrderItemDto
                 {
-                    Id= orderItem.Id,
-                    OrderId= orderItem.OrderId,
-                    ProductId= product.Id,
+                    Id = orderItem.Id,
+                    OrderId = orderItem.OrderId,
+                    ProductId = product.Id,
                     Qty = product.Qty
                 }).ToList();
 
@@ -110,13 +110,16 @@ public static class DtoConversions
     public static OrderDto ConvertToDto(this Order order,
                                         OrderItem orderitems)
     {
+
         return new OrderDto
         {
             Id = order.Id,
             OrderItemId = orderitems.Id,
-            //CustomerId = order.UserId,
-            OrderPlacementTime = order.PlacementTime.Date
+            CustomerId = order.UserId,
+            OrderPlacementTime = order.PlacementTime
+
         };
+
 
     }
 }

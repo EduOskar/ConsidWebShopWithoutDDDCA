@@ -11,5 +11,6 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddHttpClient();
 builder.Services.AddHttpClient<IProductService, ProductService>();
 builder.Services.AddHttpClient<IShoppingCartService, ShoppingCartService>();
+builder.Services.AddHttpClient<IOrderService, OrderService>();
 
 await builder.Build().RunAsync();

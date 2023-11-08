@@ -39,7 +39,7 @@ namespace ConsidWebShop.Api.Migrations
                         .IsUnique()
                         .HasFilter("[UserId] IS NOT NULL");
 
-                    b.ToTable("Carts", (string)null);
+                    b.ToTable("Carts");
 
                     b.HasData(
                         new
@@ -78,7 +78,7 @@ namespace ConsidWebShop.Api.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("CartItems", (string)null);
+                    b.ToTable("CartItems");
                 });
 
             modelBuilder.Entity("ConsidWebShop.Api.Entities.Order", b =>
@@ -100,7 +100,7 @@ namespace ConsidWebShop.Api.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("ConsidWebShop.Api.Entities.OrderItem", b =>
@@ -123,7 +123,7 @@ namespace ConsidWebShop.Api.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderItems", (string)null);
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("ConsidWebShop.Api.Entities.Product", b =>
@@ -164,7 +164,7 @@ namespace ConsidWebShop.Api.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
 
                     b.HasData(
                         new
@@ -414,7 +414,7 @@ namespace ConsidWebShop.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductCategories", (string)null);
+                    b.ToTable("ProductCategories");
 
                     b.HasData(
                         new
@@ -479,7 +479,7 @@ namespace ConsidWebShop.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
 
                     b.HasData(
                         new

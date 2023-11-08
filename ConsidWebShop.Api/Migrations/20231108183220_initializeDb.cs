@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ConsidWebShop.Api.Migrations
 {
     /// <inheritdoc />
-    public partial class InitializeDb : Migration
+    public partial class initializeDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
