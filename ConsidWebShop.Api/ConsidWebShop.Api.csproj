@@ -24,4 +24,8 @@
     <ProjectReference Include="..\ConsidWebShop.Models\ConsidWebShop.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

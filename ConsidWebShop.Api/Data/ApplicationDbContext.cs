@@ -7,11 +7,47 @@ namespace ConsidWebShop.Api.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-                
+          
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<User>(user =>
+            {
+                user
+                    .HasMany(u => u.Orders)
+                    .WithOne(o => o.User)
+                    .HasForeignKey(o => o.UserId);
+            });
+            modelBuilder.Entity<Product>(product =>
+            {
+                product.HasOne(p => p.Category)
+                .WithMany().HasForeignKey(p => p.CategoryId);
+
+            });
+            modelBuilder.Entity<Cart>(cart =>
+            {
+                cart.HasOne(c => c.User).WithOne();
+               
+            });
+            modelBuilder.Entity<CartItem>(cartItem =>
+            {
+                cartItem
+                .HasOne(ci => ci.Cart)
+                .WithMany(ca => ca.CartItem)
+                .HasForeignKey(ca => ca.CartId);
+            });
+            modelBuilder.Entity<OrderItem>(orderItem =>
+            {
+                orderItem
+                    .HasOne(oi => oi.Order)
+                    .WithMany(o => o.OrderItems)
+                    .HasForeignKey(oi => oi.OrderId);
+                orderItem.HasOne(oi => oi.Product).WithMany().HasForeignKey(oi => oi.ProductId);
+            });
+
             //Products
             //Beauty Category
             modelBuilder.Entity<Product>().HasData(new Product
@@ -263,13 +299,27 @@ namespace ConsidWebShop.Api.Data
             modelBuilder.Entity<User>().HasData(new User
             {
                 Id = 1,
-                UserName = "Bob"
+                FirstName = "Bob",
+                LastName = "Bobinsson",
+                UserName = "Bob",
+                Credit = 100000,
+                Adress = "Fakestreet 101",
+                Email = "Bob@Mail.com",
+                Phonenumber = "070-1231212",
+                Role = 1
 
             });
             modelBuilder.Entity<User>().HasData(new User
             {
                 Id = 2,
-                UserName = "Sarah"
+                FirstName = "Sarah",
+                LastName = "SarahsDaughter",
+                UserName = "Sarah",
+                Credit = 100000,
+                Adress = "Fakestreet 102",
+                Email = "Sarah@Mail.com",
+                Phonenumber = "070-3213232",
+                Role = 1
 
             });
 
@@ -277,7 +327,8 @@ namespace ConsidWebShop.Api.Data
             modelBuilder.Entity<Cart>().HasData(new Cart
             {
                 Id = 1,
-                UserId = 1
+                UserId = 1,
+                
 
             });
             modelBuilder.Entity<Cart>().HasData(new Cart
@@ -310,6 +361,8 @@ namespace ConsidWebShop.Api.Data
         }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<User> Users { get; set; }

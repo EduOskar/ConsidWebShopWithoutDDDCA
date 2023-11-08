@@ -21,7 +21,6 @@ public class CheckoutBase : ComponentBase
     protected int TotalQuantity { get; set; }
     protected string PaymentDescription { get; set; }
     protected decimal PaymentAmount { get; set; }
-    protected HardCoded HardCoded { get; set; }
 
     //Checkoutform for payment
     public CheckoutForm CheckoutForm { get; set; } = new();
@@ -39,15 +38,6 @@ public class CheckoutBase : ComponentBase
                 TotalQuantity = ShoppingCartCartItems.Sum(x => x.Qty);
                 PaymentDescription = $"_{HardCoded.UserId}_{orderGuid}";
                 
-                if (HardCoded.Money >= PaymentAmount)
-                {
-                    var newSum = HardCoded.Money - PaymentAmount;
-                   
-
-                    return;
-                    
-
-                }
             }
         }
         catch (Exception)
@@ -58,35 +48,24 @@ public class CheckoutBase : ComponentBase
 
 
     }
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        try
-        {
-            //if (firstRender)
-            //{
-            //    await Js.InvokeVoidAsync("InitiatePayButton");
-            //}
-        }
-        catch (Exception)
-        {
-
-            throw;
-        }
-    }
     private CartItemDto GetCartItem(int id)
     {
         return ShoppingCartCartItems.FirstOrDefault(x => x.Id == id);
     }
 
-
-
     protected async Task SubmitAsync()
     {
         await Js.InvokeVoidAsync("alert", $"Thank you {CheckoutForm.FirstName} - {CheckoutForm.LastName}, we will deliver to {CheckoutForm.Adress}.");
+
+        if (HardCoded.Money > PaymentAmount)
+        {
+            ShoppingCartCartItems.Clear();
+        }
+        
+
     }
 
 
-    
 }
 
 
