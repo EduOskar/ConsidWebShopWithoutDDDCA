@@ -1,6 +1,7 @@
 ﻿using ConsidWebShop.Api.Data;
 using ConsidWebShop.Api.Entities;
 using ConsidWebShop.Api.Repositories.Contracts;
+using ConsidWebShop.Models.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace ConsidWebShop.Api.Repositories;
@@ -13,6 +14,29 @@ public class OrderRepository : IOrderRepository
     {
         _dbContext = dbcontext;
     }
+
+    public async Task<Order> AddOrder(OrderDto orderDto)
+    {
+
+        
+
+        var item = await (from order in _dbContext.Orders
+                          where order.UserId == orderDto.CustomerId 
+                          select new Order
+                          {
+                              Id = orderDto.Id,
+                              UserId = orderDto.CustomerId,
+                              PlacementTime = orderDto.OrderPlacementTime
+                          }).FirstOrDefaultAsync();
+        if (item == null)
+        {
+            var result = await _dbContext.Orders.AddAsync(item);
+            await _dbContext.SaveChangesAsync();
+            return result.Entity;
+        }
+        return null;
+    }
+
     public async Task<Order> GetOrder(int userId)
     {
 

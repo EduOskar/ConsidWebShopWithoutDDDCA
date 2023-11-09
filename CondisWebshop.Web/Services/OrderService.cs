@@ -72,4 +72,31 @@ public class OrderService : IOrderService
             throw;
         }
     }
+
+    public async Task<OrderDto> AddOrder(OrderDto orderDto)
+    {
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync<OrderDto>("api/Order", orderDto);
+
+            if (response.IsSuccessStatusCode)
+            {
+                if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+                {
+                    return default;
+                }
+                return await response.Content.ReadFromJsonAsync<OrderDto>();
+            }
+            else
+            {
+                var message = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Http status:{response.StatusCode} Message -{message}");
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
 }

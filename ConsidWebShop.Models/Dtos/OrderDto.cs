@@ -10,5 +10,5 @@ public class OrderDto
     public int Id { get; set; }
     public DateTime OrderPlacementTime { get; set; }
     public int CustomerId { get; set; }
-    public int OrderItemId { get; set; }
+    public int OrderItemsId { get; set; }
 }

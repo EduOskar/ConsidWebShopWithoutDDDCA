@@ -17,6 +17,8 @@ public class CheckoutBase : ComponentBase
     public IShoppingCartService ShoppingCartService { get; set; }
     [Inject]
     public IProductService ProductService { get; set; }
+    [Inject] 
+    IOrderService OrderService { get; set; }
     protected List<CartItemDto> ShoppingCartCartItems { get; set; }
     protected int TotalQuantity { get; set; }
     protected string PaymentDescription { get; set; }
@@ -56,13 +58,36 @@ public class CheckoutBase : ComponentBase
     protected async Task SubmitAsync()
     {
         await Js.InvokeVoidAsync("alert", $"Thank you {CheckoutForm.FirstName} - {CheckoutForm.LastName}, we will deliver to {CheckoutForm.Adress}.");
+        await CartOrderTransfer();
+    }
+    public async Task<bool> CartOrderTransfer()
+    {
+        decimal Check;
+        var customer =  HardCoded.UserId;
 
-        if (HardCoded.Money > PaymentAmount)
+        if (ShoppingCartCartItems == null)
         {
-            ShoppingCartCartItems.Clear();
+            return false;
         }
-        
+        if (HardCoded.Money < PaymentAmount)
+        {
+            return false;
+        }
+        foreach (var item in ShoppingCartCartItems)
+        {
+            item.Qty--;
+        }
 
+        var orderItems = new List<OrderItemDto>();
+        //orderItems.SelectMany();
+        var order = new OrderDto
+        {
+            CustomerId = customer,
+            OrderPlacementTime = DateTime.Now,
+            OrderItemsId = ShoppingCartCartItems.ToList().First().Id,
+        };
+        await OrderService.AddOrder(order);
+        throw new NotImplementedException();
     }
 
 

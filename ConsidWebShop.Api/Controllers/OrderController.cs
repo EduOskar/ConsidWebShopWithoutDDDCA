@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using ConsidWebShop.Api.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace ConsidWebShop.Api.Controllers;
 [Route("api/[controller]")]
@@ -21,7 +22,7 @@ public class OrderController : ControllerBase
         _productRepository = productRepository;
         _userRepositorycs = userRepositorycs;
     }
-    [HttpGet("{userId:int}/GetOrderItem")]
+    [HttpGet("{userId:int}/GetOrderItems")]
     public async Task<ActionResult<IEnumerable<OrderItemDto>>> GetOrderItems(int userId)
     {
         try
@@ -49,6 +50,7 @@ public class OrderController : ControllerBase
     {
         try
         {
+            
             var order = await _orderRepository.GetOrder(userId);
             
             if (order == null)
@@ -62,6 +64,28 @@ public class OrderController : ControllerBase
 
             throw;
         }
+    }
+    [HttpPost]
+    [Route("AddOrder")]
+    public async Task<ActionResult<Order>> AddOrder([FromBody] OrderDto orderDto)
+    {
+        try
+        {
+            var newOrder = await _orderRepository.AddOrder(orderDto);
+            if (newOrder == null)
+            {
+                return NoContent();
+            }
+            var newOrderDto = newOrder.Id == orderDto.Id;
+            return CreatedAtAction(nameof(AddOrder), newOrderDto);
+        }
+        catch (Exception)
+        {
+
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                                                "Error retrieving data from the database");
+        }
+        
     }
     
 }

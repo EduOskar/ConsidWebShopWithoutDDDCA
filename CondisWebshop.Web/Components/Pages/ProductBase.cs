@@ -43,7 +43,7 @@ namespace CondisWebshop.Web.Components.Pages
                    orderby prodByCatGroup.Key
                    select prodByCatGroup;
         }
-        protected string GetCategoryName(IGrouping<int, ProductDto> groupedProductDto)
+        protected static string GetCategoryName(IGrouping<int, ProductDto> groupedProductDto)
         {
             return groupedProductDto.FirstOrDefault(pg => pg.CategoryId == groupedProductDto.Key).CategoryName;
         }

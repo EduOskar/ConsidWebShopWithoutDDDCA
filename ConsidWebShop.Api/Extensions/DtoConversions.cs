@@ -108,16 +108,15 @@ public static class DtoConversions
 
     }
     public static OrderDto ConvertToDto(this Order order,
-                                        OrderItem orderitems)
+                                             OrderItem orderItems)
     {
 
         return new OrderDto
         {
             Id = order.Id,
-            OrderItemId = orderitems.Id,
+            OrderItemsId = orderItems.ProductId,
             CustomerId = order.UserId,
             OrderPlacementTime = order.PlacementTime
-
         };
 
 

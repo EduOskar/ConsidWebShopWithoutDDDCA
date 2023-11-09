@@ -17,6 +17,13 @@ namespace CondisWebshop.Web.Services
         public ShoppingCartService(HttpClient httpClient)
         {
             this.httpClient = httpClient;
+            ConfigureClient();
+        }
+        private void ConfigureClient()
+        {
+            httpClient.BaseAddress =
+                new Uri("https://localhost:7012/");
+            httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
         }
 
         public async Task<CartItemDto> AddItem(CartItemToAddDto cartItemToAddDto)
@@ -29,7 +36,7 @@ namespace CondisWebshop.Web.Services
                 {
                     if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
                     {
-                        return default(CartItemDto);
+                        return default;
                     }
 
                     return await response.Content.ReadFromJsonAsync<CartItemDto>();
@@ -59,7 +66,7 @@ namespace CondisWebshop.Web.Services
                 {
                     return await response.Content.ReadFromJsonAsync<CartItemDto>();
                 }
-                return default(CartItemDto);
+                return default;
             }
             catch (Exception)
             {
