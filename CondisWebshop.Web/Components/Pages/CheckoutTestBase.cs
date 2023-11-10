@@ -8,7 +8,7 @@ using Microsoft.JSInterop;
 
 namespace CondisWebshop.Web.Components.Pages;
 
-public class CheckoutBase : ComponentBase
+public class CheckoutTestBase : ComponentBase
 {
     //[Inject]
     [Inject]
@@ -47,8 +47,6 @@ public class CheckoutBase : ComponentBase
 
             throw;
         }
-
-
     }
     private CartItemDto GetCartItem(int id)
     {
@@ -57,8 +55,9 @@ public class CheckoutBase : ComponentBase
 
     protected async Task SubmitAsync()
     {
-        await Js.InvokeVoidAsync("alert", $"Thank you {CheckoutForm.FirstName} - {CheckoutForm.LastName}, we will deliver to {CheckoutForm.Adress}.");
         await CartOrderTransfer();
+        await Js.InvokeVoidAsync("alert", $"Thank you {CheckoutForm.FirstName} - {CheckoutForm.LastName}, we will deliver to {CheckoutForm.Adress}.");
+        
     }
     public async Task<bool> CartOrderTransfer()
     {
@@ -76,21 +75,27 @@ public class CheckoutBase : ComponentBase
         foreach (var item in ShoppingCartCartItems)
         {
             item.Qty--;
+            var order = new OrderDto
+            {
+                CustomerId = customer,
+                OrderPlacementTime = DateTime.Now,
+                OrderItemsId = ShoppingCartCartItems.ToList().First().Id,
+
+            };
+            await OrderService.AddOrder(order);
+            foreach (var newOrderItem in ShoppingCartCartItems)
+            {
+                var orderItem = new OrderItemToAddDto
+                {
+                    ProductId = newOrderItem.ProductId,
+                    OrderId = order.Id,
+                    Qty = item.Qty++,
+                };
+                await OrderService.AddOrderItem(orderItem);
+            }            
         }
-
-        var orderItems = new List<OrderItemDto>();
-        //orderItems.SelectMany();
-        var order = new OrderDto
-        {
-            CustomerId = customer,
-            OrderPlacementTime = DateTime.Now,
-            OrderItemsId = ShoppingCartCartItems.ToList().First().Id,
-        };
-        await OrderService.AddOrder(order);
-        throw new NotImplementedException();
+        return default;
     }
-
-
 }
 
 

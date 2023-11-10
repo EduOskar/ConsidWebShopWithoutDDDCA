@@ -9,7 +9,7 @@ namespace ConsidWebShop.Api.Repositories.Contracts
         Task<IEnumerable<ProductCategory>> GetCategories();
         Task<Product> GetItem(int id);
         Task<ProductCategory> GetCategory(int id); 
-        Task<Product> AddProduct(ProductToAddDto productToAddDto);
+        Task<Product> CreateProduct(ProductToAddDto productToAddDto);
         Task<Product> DeleteProduct(int Id);
     }
 }

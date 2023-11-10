@@ -40,32 +40,43 @@ public class ProductRepository : IProductRepository
         var product = await _dbContext.Products.FindAsync(id);
         return product;
     }
-    public async Task<Product> AddProduct(ProductToAddDto productToAddDto)
+    public async Task<Product> CreateProduct(ProductToAddDto productToAddDto)
     {
 
-        var item = await (from product in _dbContext.Products
-                          where product.CategoryId == productToAddDto.CategoryId
-                          
-                          select new Product
-                          {
-                              Name = productToAddDto.Name,
-                              Description = productToAddDto.Description,
-                              ImageURL = productToAddDto.ImageURL,
-                              Price = productToAddDto.Price,
-                              Qty = productToAddDto.Qty,
-                              CategoryId = productToAddDto.CategoryId,
-                          }).FirstOrDefaultAsync();
-        if (item != null)
+        //var item = await (from product in _dbContext.Products
+        //                  where product.CategoryId == productToAddDto.CategoryId
+
+        //                  select new Product
+        //                  {
+        //                      Name = productToAddDto.Name,
+        //                      Description = productToAddDto.Description,
+        //                      ImageURL = productToAddDto.ImageURL,
+        //                      Price = productToAddDto.Price,
+        //                      Qty = productToAddDto.Qty,
+        //                      CategoryId = productToAddDto.CategoryId,
+        //                  }).FirstOrDefaultAsync();
+
+        //if (item != null)
+        //{
+        //    var result = await _dbContext.Products.AddAsync(item);
+        //    await _dbContext.SaveChangesAsync();
+        //    return result.Entity;
+        //}
+
+        var item = new Product
         {
-            var result = await _dbContext.Products.AddAsync(item);
-            await _dbContext.SaveChangesAsync();
-            return result.Entity;
-        }
+            Name = productToAddDto.Name,
+            Description = productToAddDto.Description,
+            ImageURL = productToAddDto.ImageURL,
+            Price = productToAddDto.Price,
+            Qty = productToAddDto.Qty,
+            CategoryId = productToAddDto.CategoryId,
+        };
 
+        var result = await _dbContext.Products.AddAsync(item);
+        await _dbContext.SaveChangesAsync();
 
-
-
-        return null;
+        return result.Entity;
     }
 
     public async Task<Product> DeleteProduct(int id)

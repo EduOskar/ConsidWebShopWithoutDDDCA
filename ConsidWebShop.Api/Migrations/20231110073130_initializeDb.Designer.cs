@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConsidWebShop.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231108183220_initializeDb")]
+    [Migration("20231110073130_initializeDb")]
     partial class initializeDb
     {
         /// <inheritdoc />
@@ -33,14 +33,13 @@ namespace ConsidWebShop.Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CartItemId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("Carts");
 
@@ -48,11 +47,13 @@ namespace ConsidWebShop.Api.Migrations
                         new
                         {
                             Id = 1,
+                            CartItemId = 0,
                             UserId = 1
                         },
                         new
                         {
                             Id = 2,
+                            CartItemId = 0,
                             UserId = 2
                         });
                 });
@@ -77,10 +78,6 @@ namespace ConsidWebShop.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CartId");
-
-                    b.HasIndex("ProductId");
-
                     b.ToTable("CartItems");
                 });
 
@@ -92,6 +89,9 @@ namespace ConsidWebShop.Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("OrderItemId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("PlacementTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
@@ -100,8 +100,6 @@ namespace ConsidWebShop.Api.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -121,10 +119,6 @@ namespace ConsidWebShop.Api.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("OrderItems");
                 });
@@ -469,6 +463,9 @@ namespace ConsidWebShop.Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Phonenumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -493,6 +490,7 @@ namespace ConsidWebShop.Api.Migrations
                             Email = "Bob@Mail.com",
                             FirstName = "Bob",
                             LastName = "Bobinsson",
+                            OrderId = 0,
                             Phonenumber = "070-1231212",
                             Role = 1,
                             UserName = "Bob"
@@ -505,68 +503,11 @@ namespace ConsidWebShop.Api.Migrations
                             Email = "Sarah@Mail.com",
                             FirstName = "Sarah",
                             LastName = "SarahsDaughter",
+                            OrderId = 0,
                             Phonenumber = "070-3213232",
                             Role = 1,
                             UserName = "Sarah"
                         });
-                });
-
-            modelBuilder.Entity("ConsidWebShop.Api.Entities.Cart", b =>
-                {
-                    b.HasOne("ConsidWebShop.Api.Entities.User", "User")
-                        .WithOne()
-                        .HasForeignKey("ConsidWebShop.Api.Entities.Cart", "UserId");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ConsidWebShop.Api.Entities.CartItem", b =>
-                {
-                    b.HasOne("ConsidWebShop.Api.Entities.Cart", "Cart")
-                        .WithMany("CartItem")
-                        .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ConsidWebShop.Api.Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cart");
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("ConsidWebShop.Api.Entities.Order", b =>
-                {
-                    b.HasOne("ConsidWebShop.Api.Entities.User", "User")
-                        .WithMany("Orders")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ConsidWebShop.Api.Entities.OrderItem", b =>
-                {
-                    b.HasOne("ConsidWebShop.Api.Entities.Order", "Order")
-                        .WithMany("OrderItems")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ConsidWebShop.Api.Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("ConsidWebShop.Api.Entities.Product", b =>
@@ -578,21 +519,6 @@ namespace ConsidWebShop.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("ConsidWebShop.Api.Entities.Cart", b =>
-                {
-                    b.Navigation("CartItem");
-                });
-
-            modelBuilder.Entity("ConsidWebShop.Api.Entities.Order", b =>
-                {
-                    b.Navigation("OrderItems");
-                });
-
-            modelBuilder.Entity("ConsidWebShop.Api.Entities.User", b =>
-                {
-                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

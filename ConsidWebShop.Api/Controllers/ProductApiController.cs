@@ -69,7 +69,6 @@ namespace ConsidWebShop.Api.Controllers
 
         }
         [HttpPost]
-        [Route("CreateProduct")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<Product>> CreateProduct([FromBody] ProductToAddDto productToAddDto)
         {
@@ -80,7 +79,9 @@ namespace ConsidWebShop.Api.Controllers
                 {
                     return NoContent();
                 }
+
                 var productDto = newProduct.CategoryId;
+
                 return CreatedAtAction(nameof(CreateProduct), productDto);
             }
             catch (Exception)
@@ -91,7 +92,6 @@ namespace ConsidWebShop.Api.Controllers
             }
         }
         [HttpDelete]
-        [Route("DeleteItem")]
         public async Task<ActionResult<ProductDto>> DeleteItem(int id)
         {
             try

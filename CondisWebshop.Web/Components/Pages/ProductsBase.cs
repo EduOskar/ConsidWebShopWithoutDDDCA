@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace CondisWebshop.Web.Components.Pages
 {
-    public class ProductBase : ComponentBase
+    public class ProductsBase : ComponentBase
     {
         [Inject]
         public IProductService ProductService { get; set; }

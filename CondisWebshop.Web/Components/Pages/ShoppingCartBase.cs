@@ -12,12 +12,12 @@ namespace CondisWebshop.Web.Components.Pages
         [Inject]
         public IShoppingCartService ShoppingCartService { get; set; }
 
-        public List<CartItemDto> ShoppingCartItems { get; set; }
+        public List<CartItemDto> ShoppingCartItems { get; set; } = new List<CartItemDto>();
         public NavigationManager NavigationManager { get; set; }
 
         public string ErrorMessage { get; set; }
 
-        protected string TotalPrice { get; set; }
+        protected string TotalPrice { get; set; } = string.Empty;
         protected int TotalQuantity { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -139,5 +139,6 @@ namespace CondisWebshop.Web.Components.Pages
             CalculateCartSummaryTotals();
             ShoppingCartService.RaiseEventOnShoppingCartChanged(TotalQuantity);
         }
+    
     }
 }

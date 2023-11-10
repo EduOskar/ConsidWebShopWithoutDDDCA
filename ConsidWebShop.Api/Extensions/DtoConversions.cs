@@ -53,6 +53,22 @@ public static class DtoConversions
             CategoryId = product.CategoryId,
         };
     }
+    public static Product ConvertFromDto(this Product product,
+                                            ProductDto productDto)
+    {
+
+        return new Product
+        {
+            Id = productDto.Id,
+            Name = productDto.Name,
+            Description = productDto.Description,
+            ImageURL = productDto.ImageURL,
+            Price = productDto.Price,
+            Qty = productDto.Qty,
+            CategoryId = productDto.CategoryId,
+            
+        };
+    }
 
     public static IEnumerable<CartItemDto> ConvertToDto(this IEnumerable<CartItem> cartItems,
                                                         IEnumerable<Product> products)
@@ -103,9 +119,26 @@ public static class DtoConversions
                     Id = orderItem.Id,
                     OrderId = orderItem.OrderId,
                     ProductId = product.Id,
-                    Qty = product.Qty
+                    ProductName = product.Name,
+                    ProductDescription = product.Description,
+                    Qty = orderItem.Qty,
                 }).ToList();
 
+    }
+    public static OrderItemDto ConvertToDto(this OrderItem orderItems,
+                                                      Product product)
+    {
+
+        return new OrderItemDto
+        {
+            Id = orderItems.Id,
+            OrderId = orderItems.Id,
+            ProductId = orderItems.ProductId,
+            ProductName = product.Name,
+            ProductDescription = product.Description,
+            Qty = orderItems.Qty,
+
+        };
     }
     public static OrderDto ConvertToDto(this Order order,
                                              OrderItem orderItems)
@@ -121,4 +154,5 @@ public static class DtoConversions
 
 
     }
+ 
 }

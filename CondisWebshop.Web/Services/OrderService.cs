@@ -1,6 +1,8 @@
 ﻿using CondisWebshop.Web.Services.Contracts;
 using ConsidWebShop.Models.Dtos;
+using Newtonsoft.Json;
 using System.Net.Http.Json;
+using System.Text;
 
 namespace CondisWebshop.Web.Services;
 
@@ -77,7 +79,9 @@ public class OrderService : IOrderService
     {
         try
         {
-            var response = await _httpClient.PostAsJsonAsync<OrderDto>("api/Order", orderDto);
+            //var jsonRequest = JsonConvert.SerializeObject(orderDto);
+            //var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json-");
+            var response = await _httpClient.PostAsJsonAsync<OrderDto>("api/Order/AddOrder", orderDto);
 
             if (response.IsSuccessStatusCode)
             {
@@ -97,6 +101,23 @@ public class OrderService : IOrderService
         {
 
             throw;
+        }
+    }
+    public async Task<OrderItemDto> AddOrderItem(OrderItemToAddDto orderItemToAdd)
+    {
+        var response = await _httpClient.PostAsJsonAsync<OrderItemToAddDto>("api/Order/AddOrderItem", orderItemToAdd);
+        if (response.IsSuccessStatusCode)
+        {
+            if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+            {
+                return default;
+            }
+            return await response.Content.ReadFromJsonAsync<OrderItemDto>();
+        }
+        else
+        {
+            var message = await response.Content.ReadAsStringAsync();
+            throw new Exception($"Http status:{response.StatusCode} Message -{message}");
         }
     }
 }

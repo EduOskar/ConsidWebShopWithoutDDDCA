@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ConsidWebShop.Models.Dtos;
-
-public class CartItemQtyUpdateDto
+public class OrderItemToAddDto
 {
-    public int CartItemId { get; set; }
+    public int OrderId { get; set; }
+    public int ProductId { get; set; }
     public int Qty { get; set; }
 }
