@@ -53,8 +53,7 @@ public static class DtoConversions
             CategoryId = product.CategoryId,
         };
     }
-    public static Product ConvertFromDto(this Product product,
-                                            ProductDto productDto)
+    public static Product ConvertFromDto(ProductDto productDto)
     {
 
         return new Product
@@ -145,7 +144,6 @@ public static class DtoConversions
 
         return orders.Select(order => new OrderDto
         {
-            Id = order.Id,
             OrderItemsId = order.OrderItemId,
             UserId = order.UserId,
             OrderPlacementTime = order.PlacementTime,
@@ -168,9 +166,8 @@ public static class DtoConversions
     {
         return new OrderDto
         {
-            Id = orders.Id,
             OrderItemsId = orders.OrderItemId,
-            UserId = orders.UserId,
+             UserId = orders.UserId,
             OrderPlacementTime = orders.PlacementTime,
             OrderItems = orderItems
               .Where(oi => oi.OrderId == orders.Id)
@@ -182,6 +179,7 @@ public static class DtoConversions
                   ProductName = oi.Product.Name,
                   Price = oi.Product.Price,
                   ProductDescription = oi.Product.Description,
+                  Qty = oi.Product.Qty,
               })
               .ToList()
         };
@@ -190,7 +188,6 @@ public static class DtoConversions
     {
         return new OrderDto
         {
-            Id = order.Id,
             OrderItemsId = order.OrderItems.FirstOrDefault()?.Id ?? 0, // Set appropriately
             UserId = order.UserId,
             OrderPlacementTime = order.PlacementTime,
@@ -203,6 +200,15 @@ public static class DtoConversions
                 Price = oi.Product.Price,
                 ProductDescription = oi.Product.Description,
             }).ToList()
+        };
+    }
+    public static OrderToAddDto ConvertToDo(this Order order)
+    {
+        return new OrderToAddDto
+        {
+            OrderItemId = order.OrderItemId,
+            PlacementTime = order.PlacementTime,
+            UserId = order.UserId         
         };
     }
 

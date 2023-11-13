@@ -8,8 +8,9 @@ public interface IOrderRepository
  
     Task<IEnumerable<Order>> GetOrders(); 
     Task<IEnumerable<OrderItem>> GetOrderItems();
+    Task<OrderItem> CreateOrderItem(OrderItemToAddDto orderItemToAddDto);
     Task<Order> GetOrder(int id);
-    Task<Order> CreateOrder(OrderDto orderDto, List<int> orderItemId);
+    Task<Order> CreateOrder(OrderToAddDto orderDto);
     Task<Order> DeleteOrder(int id);
 
 }

@@ -40,7 +40,7 @@ public class OrdersController : ControllerBase
         }
     }
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<OrderDto>> GetOrder(int id)
+    public async Task<ActionResult<Order>> GetOrder(int id)
     {
         try
         {
@@ -63,9 +63,29 @@ public class OrdersController : ControllerBase
         
     }
     [HttpPost]
-    public async Task<ActionResult<OrderDto>> PostOrder([FromBody] OrderDto orderDto)
+    [Route("PostOrderItem")]
+    public async Task<ActionResult<OrderItem>> PostOrderItem([FromBody] OrderItemToAddDto orderItemToAddDto)
     {
-        var order = await _orderRepository.CreateOrder(orderDto);
+        try
+        {
+            var orderItem = await _orderRepository.CreateOrderItem(orderItemToAddDto);
+            if (orderItem == null)
+            {
+                return NotFound();
+            }
+
+            return CreatedAtAction(nameof(PostOrderItem), orderItemToAddDto);
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+    [HttpPost]
+    public async Task<ActionResult<Order>> PostOrder([FromBody] OrderToAddDto orderToAddDto)
+    {
+        var order = await _orderRepository.CreateOrder(orderToAddDto);
         if (order == null)
         {
             return NoContent();
@@ -73,7 +93,7 @@ public class OrdersController : ControllerBase
         var orderItems = await _orderRepository.GetOrderItems();
         var newOrderDto = order.ConvertToDto(orderItems);
 
-        return CreatedAtAction(nameof(PostOrder), new { id = newOrderDto.Id }, newOrderDto);
+        return CreatedAtAction(nameof(PostOrder), newOrderDto);
     }
 
  
@@ -85,7 +105,7 @@ public class OrdersController : ControllerBase
 
 
     [HttpDelete("{id:int}")]
-    public async Task<ActionResult<OrderDto>> DeleteOrder(int id)
+    public async Task<ActionResult<Order>> DeleteOrder(int id)
     {
         var order = await _orderRepository.DeleteOrder(id);
         if (order == null)

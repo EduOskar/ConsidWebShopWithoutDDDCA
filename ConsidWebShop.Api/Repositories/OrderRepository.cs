@@ -16,10 +16,26 @@ public class OrderRepository : IOrderRepository
     }
     public async Task<IEnumerable<OrderItem>> GetOrderItems()
     {
+        //var cartItems = await _dbContext.CartItems.ToListAsync();
+
         var orderItems = await _dbContext.OrderItems
             .Include(p => p.Product)
             .ToListAsync();
         return orderItems;
+    }
+    public async Task<OrderItem> CreateOrderItem(OrderItemToAddDto orderItemToAddDto)
+    {
+        var orderItem = new OrderItem
+        {
+            OrderId = orderItemToAddDto.OrderId,
+            ProductId = orderItemToAddDto.ProductId,
+            Qty = orderItemToAddDto.Qty,
+        };
+
+        var result = await _dbContext.OrderItems.AddAsync(orderItem);
+        await _dbContext.SaveChangesAsync();
+
+        return result.Entity;
     }
     public async Task<IEnumerable<Order>> GetOrders()
     {
@@ -31,11 +47,11 @@ public class OrderRepository : IOrderRepository
         var order = await _dbContext.Orders.FindAsync(id);
         return order;
     }
-    public async Task<Order> CreateOrder(OrderDto orderDto, List<int> orderItemId)
+    public async Task<Order> CreateOrder(OrderToAddDto orderDto)
     {
         var orderItems = new List<OrderItem>();
 
-        foreach (var item in orderItemId)
+        foreach (var item in orderItems)
         {
             var orderItem = await _dbContext.OrderItems.FindAsync(item);
 
@@ -45,7 +61,7 @@ public class OrderRepository : IOrderRepository
             }
             else
             {
-                throw new InvalidOperationException($"Order item with ID {orderItemId} not found.");
+                throw new InvalidOperationException($"Order item with ID not found.");
             }
 
         }
@@ -53,17 +69,11 @@ public class OrderRepository : IOrderRepository
         var order = new Order
         {
             UserId = orderDto.UserId,
-            PlacementTime = orderDto.OrderPlacementTime,
-            OrderItemId = orderDto.OrderItemsId,
-            OrderItems = orderDto.OrderItems.Select(orderItemDto => new OrderItem
-            {
-                Id = orderItemDto.Id,
-                ProductId = orderItemDto.ProductId,
-                OrderId = orderItemDto.OrderId,
-                
-            }).ToList()
-            
+            PlacementTime = orderDto.PlacementTime,
+            OrderItemId = orderDto.OrderItemId,
+            OrderItems = orderItems
         };
+
         var result = await _dbContext.Orders.AddAsync(order);
         await _dbContext.SaveChangesAsync();
 
