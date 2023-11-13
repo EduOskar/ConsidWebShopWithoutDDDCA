@@ -53,12 +53,12 @@ public class ShoppingCartController : ControllerBase
         }
     }
 
-    [HttpGet("{Id:int}/GetItem")]
-    public async Task<ActionResult<CartItemDto>> GetItem(int Id)
+    [HttpGet("{id:int}/GetItem")]
+    public async Task<ActionResult<CartItemDto>> GetItem(int id)
     {
         try
         {
-            var cartItem = await _shoppingCartRepository.GetItem(Id);
+            var cartItem = await _shoppingCartRepository.GetItem(id);
             if (cartItem == null)
             {
                 return NotFound();
@@ -71,6 +71,7 @@ public class ShoppingCartController : ControllerBase
             }
 
             var cartItemDto = cartItem.ConvertToDto(product);
+
             return Ok(cartItemDto);
         }
         catch (Exception ex)
@@ -86,6 +87,7 @@ public class ShoppingCartController : ControllerBase
         try
         {
             var newCartItem = await _shoppingCartRepository.AddItem(cartItemToAddDto);
+
             if (newCartItem == null)
             {
                 return NoContent();

@@ -18,7 +18,7 @@ public class CheckoutTestBase : ComponentBase
     [Inject]
     public IProductService ProductService { get; set; }
     [Inject] 
-    IOrderService OrderService { get; set; }
+    public IOrderService OrderService { get; set; }
     protected List<CartItemDto> ShoppingCartCartItems { get; set; }
     protected int TotalQuantity { get; set; }
     protected string PaymentDescription { get; set; }
@@ -55,46 +55,46 @@ public class CheckoutTestBase : ComponentBase
 
     protected async Task SubmitAsync()
     {
-        await CartOrderTransfer();
-        await Js.InvokeVoidAsync("alert", $"Thank you {CheckoutForm.FirstName} - {CheckoutForm.LastName}, we will deliver to {CheckoutForm.Adress}.");
-        
+        if (await CartOrderTransfer())
+        {
+            await Js.InvokeVoidAsync("alert", $"Thank you {CheckoutForm.FirstName} - {CheckoutForm.LastName}, we will deliver to {CheckoutForm.Adress}.");
+        }
+        else 
+        {
+            await Js.InvokeVoidAsync("alert", $"Failed to process the order. Please try again");
+        }
+
     }
     public async Task<bool> CartOrderTransfer()
     {
-        decimal Check;
-        var customer =  HardCoded.UserId;
+        //var customer =  HardCoded.UserId;
 
-        if (ShoppingCartCartItems == null)
-        {
-            return false;
-        }
-        if (HardCoded.Money < PaymentAmount)
-        {
-            return false;
-        }
-        foreach (var item in ShoppingCartCartItems)
-        {
-            item.Qty--;
-            var order = new OrderDto
-            {
-                CustomerId = customer,
-                OrderPlacementTime = DateTime.Now,
-                OrderItemsId = ShoppingCartCartItems.ToList().First().Id,
+        //if (ShoppingCartCartItems == null || ShoppingCartCartItems.Count == 0)
+        //{
 
-            };
-            await OrderService.AddOrder(order);
-            foreach (var newOrderItem in ShoppingCartCartItems)
-            {
-                var orderItem = new OrderItemToAddDto
-                {
-                    ProductId = newOrderItem.ProductId,
-                    OrderId = order.Id,
-                    Qty = item.Qty++,
-                };
-                await OrderService.AddOrderItem(orderItem);
-            }            
-        }
-        return default;
+        //    return false;
+
+        //}
+
+
+        //foreach (var cartItem in ShoppingCartCartItems)
+        //{
+        //    await ShoppingCartService.DeleteItem(cartItem.Id);
+        //}
+
+        //var orderItems = ShoppingCartCartItems.Select(cartItem => new OrderItemToAddDto
+        //{
+        //    ProductId = cartItem.ProductId,
+        //    Qty = cartItem.Qty,
+
+        //}).ToList();
+        //var order = orderItems.Select(orderItems => new OrderDto
+        //{
+        //    UserId = customer,
+        //    OrderPlacementTime = DateTime.Now,
+        //    OrderItemsId = orderItems.
+        //});
+        throw new NotImplementedException();
     }
 }
 

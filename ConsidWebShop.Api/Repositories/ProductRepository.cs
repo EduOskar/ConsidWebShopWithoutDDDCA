@@ -43,26 +43,6 @@ public class ProductRepository : IProductRepository
     public async Task<Product> CreateProduct(ProductToAddDto productToAddDto)
     {
 
-        //var item = await (from product in _dbContext.Products
-        //                  where product.CategoryId == productToAddDto.CategoryId
-
-        //                  select new Product
-        //                  {
-        //                      Name = productToAddDto.Name,
-        //                      Description = productToAddDto.Description,
-        //                      ImageURL = productToAddDto.ImageURL,
-        //                      Price = productToAddDto.Price,
-        //                      Qty = productToAddDto.Qty,
-        //                      CategoryId = productToAddDto.CategoryId,
-        //                  }).FirstOrDefaultAsync();
-
-        //if (item != null)
-        //{
-        //    var result = await _dbContext.Products.AddAsync(item);
-        //    await _dbContext.SaveChangesAsync();
-        //    return result.Entity;
-        //}
-
         var item = new Product
         {
             Name = productToAddDto.Name,

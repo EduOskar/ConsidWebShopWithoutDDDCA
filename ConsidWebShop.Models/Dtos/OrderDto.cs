@@ -9,6 +9,7 @@ public class OrderDto
 {
     public int Id { get; set; }
     public DateTime OrderPlacementTime { get; set; }
-    public int CustomerId { get; set; }
+    public int UserId { get; set; }
     public int OrderItemsId { get; set; }
+    public ICollection<OrderItemDto> OrderItems { get; set; } = new List<OrderItemDto>();
 }

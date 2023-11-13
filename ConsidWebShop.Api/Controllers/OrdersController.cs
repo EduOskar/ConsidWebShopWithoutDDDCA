@@ -19,25 +19,79 @@ public class OrdersController : ControllerBase
     {
         _orderRepository = orderRepository;
     }
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<OrderDto>>> GetOrders()
+    {
+        try
+        {
+            var orders = await _orderRepository.GetOrders();
+            var orderItems = await _orderRepository.GetOrderItems();
+            if (orders == null || orderItems == null)
+            {
+                return NotFound();
+            }
+            var orderDto = orders.ConvertToDto(orderItems);
+            return Ok(orderDto);
+        }
+        catch (Exception)
+        {
 
+            throw;
+        }
+    }
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<OrderDto>> GetOrder(int id)
+    {
+        try
+        {
+            var order = await _orderRepository.GetOrder(id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+            var orderItems = await _orderRepository.GetOrderItems();
+
+            var orderDto = order.ConvertToDto(orderItems);
+
+            return Ok(orderDto);
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+        
+    }
     [HttpPost]
-    public IActionResult CreateOrder(Order order)
+    public async Task<ActionResult<OrderDto>> PostOrder([FromBody] OrderDto orderDto)
     {
-        return Ok(order);
+        var order = await _orderRepository.CreateOrder(orderDto);
+        if (order == null)
+        {
+            return NoContent();
+        }
+        var orderItems = await _orderRepository.GetOrderItems();
+        var newOrderDto = order.ConvertToDto(orderItems);
+
+        return CreatedAtAction(nameof(PostOrder), new { id = newOrderDto.Id }, newOrderDto);
     }
-    [HttpGet("/Order/{id:int}")]
-    public IActionResult GetOrder(int id)
-    {
-        return Ok(id);
-    }
+
+ 
     [HttpPut]
-    public IActionResult ChangeOrder(Order order, int id) 
+    public IActionResult PutOrder(Order order, int id) 
     { 
         return Ok(order);
     }
-    [HttpDelete("/Order/{id:int}")]
-    public IActionResult DeleteOrder(int id)
+
+
+    [HttpDelete("{id:int}")]
+    public async Task<ActionResult<OrderDto>> DeleteOrder(int id)
     {
-        return Ok(id);
+        var order = await _orderRepository.DeleteOrder(id);
+        if (order == null)
+        {
+            return NotFound();
+        }
+        return NoContent();
     }
 }

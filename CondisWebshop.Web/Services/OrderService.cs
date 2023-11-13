@@ -79,9 +79,8 @@ public class OrderService : IOrderService
     {
         try
         {
-            //var jsonRequest = JsonConvert.SerializeObject(orderDto);
-            //var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json-");
-            var response = await _httpClient.PostAsJsonAsync<OrderDto>("api/Order/AddOrder", orderDto);
+
+            var response = await _httpClient.PostAsJsonAsync<OrderDto>("api/Order/PostOrders", orderDto);
 
             if (response.IsSuccessStatusCode)
             {

@@ -66,7 +66,7 @@ public static class DtoConversions
             Price = productDto.Price,
             Qty = productDto.Qty,
             CategoryId = productDto.CategoryId,
-            
+
         };
     }
 
@@ -121,7 +121,6 @@ public static class DtoConversions
                     ProductId = product.Id,
                     ProductName = product.Name,
                     ProductDescription = product.Description,
-                    Qty = orderItem.Qty,
                 }).ToList();
 
     }
@@ -134,25 +133,77 @@ public static class DtoConversions
             Id = orderItems.Id,
             OrderId = orderItems.Id,
             ProductId = orderItems.ProductId,
-            ProductName = product.Name,
-            ProductDescription = product.Description,
-            Qty = orderItems.Qty,
+            ProductName = product?.Name,
+            Price = product?.Price,
+            ProductDescription = product?.Description,
 
         };
     }
-    public static OrderDto ConvertToDto(this Order order,
-                                             OrderItem orderItems)
+    public static IEnumerable<OrderDto> ConvertToDto(this IEnumerable<Order> orders,
+                                             IEnumerable<OrderItem> orderItems)
     {
 
+        return orders.Select(order => new OrderDto
+        {
+            Id = order.Id,
+            OrderItemsId = order.OrderItemId,
+            UserId = order.UserId,
+            OrderPlacementTime = order.PlacementTime,
+            OrderItems = orderItems
+            .Where(oi => oi.OrderId == order.Id)
+            .Select(oi => new OrderItemDto
+            {
+                Id = oi.Id,
+                OrderId = oi.OrderId,
+                ProductId = oi.ProductId,
+                ProductName = oi.Product.Name,
+                Price = oi.Product.Price,
+                ProductDescription = oi.Product.Description,
+            })
+            .ToList()
+        }).ToList();
+    }
+    public static OrderDto ConvertToDto(this Order orders,
+                                           IEnumerable<OrderItem> orderItems)
+    {
+        return new OrderDto
+        {
+            Id = orders.Id,
+            OrderItemsId = orders.OrderItemId,
+            UserId = orders.UserId,
+            OrderPlacementTime = orders.PlacementTime,
+            OrderItems = orderItems
+              .Where(oi => oi.OrderId == orders.Id)
+              .Select(oi => new OrderItemDto
+              {
+                  Id = oi.Id,
+                  OrderId = oi.OrderId,
+                  ProductId = oi.ProductId,
+                  ProductName = oi.Product.Name,
+                  Price = oi.Product.Price,
+                  ProductDescription = oi.Product.Description,
+              })
+              .ToList()
+        };
+    }
+    public static OrderDto ConvertToDto(this Order order)
+    {
         return new OrderDto
         {
             Id = order.Id,
-            OrderItemsId = orderItems.ProductId,
-            CustomerId = order.UserId,
-            OrderPlacementTime = order.PlacementTime
+            OrderItemsId = order.OrderItems.FirstOrDefault()?.Id ?? 0, // Set appropriately
+            UserId = order.UserId,
+            OrderPlacementTime = order.PlacementTime,
+            OrderItems = order.OrderItems.Select(oi => new OrderItemDto
+            {
+                Id = oi.Id,
+                OrderId = oi.OrderId,
+                ProductId = oi.ProductId,
+                ProductName = oi.Product.Name,
+                Price = oi.Product.Price,
+                ProductDescription = oi.Product.Description,
+            }).ToList()
         };
-
-
     }
- 
+
 }

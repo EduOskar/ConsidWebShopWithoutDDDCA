@@ -6,109 +6,108 @@ using ConsidWebShop.Models.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ConsidWebShop.Api.Controllers
+namespace ConsidWebShop.Api.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class ProductApiController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ProductApiController : ControllerBase
+    private readonly IProductRepository _productRepository;
+
+    public ProductApiController(IProductRepository productRepository)
     {
-        private readonly IProductRepository _productRepository;
-
-        public ProductApiController(IProductRepository productRepository)
+        _productRepository = productRepository;
+    }
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<ProductDto>>> Items()
+    {
+        try
         {
-            _productRepository = productRepository;
+            var products = await _productRepository.GetItems();
+            var categories = await _productRepository.GetCategories();
+            if (products == null || categories == null)
+            {
+                return NotFound();
+            }
+
+            var productDto = products.ConvertToDto(categories);
+
+            return Ok(productDto);
+            
         }
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDto>>> GetItems()
+        catch (Exception)
         {
-            try
-            {
-                var products = await _productRepository.GetItems();
-                var categories = await _productRepository.GetCategories();
-                if (products == null || categories == null)
-                {
-                    return NotFound();
-                }
 
-                var productDto = products.ConvertToDto(categories);
-
-                return Ok(productDto);
-                
-            }
-            catch (Exception)
-            {
-
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                                                "Error retrieving data from the database");
-            }
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                                            "Error retrieving data from the database");
         }
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<ProductDto>> GetItem(int id)
+    }
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<ProductDto>> Item(int id)
+    {
+        try
         {
-            try
+            var product = await _productRepository.GetItem(id);
+            if (product == null)
             {
-                var product = await _productRepository.GetItem(id);
-                if (product == null)
-                {
-                    return NotFound();
-                }
-
-                var productCategory = await _productRepository.GetCategory(product.CategoryId);
-
-                var productDto = product.ConvertToDto(productCategory);
-
-                return Ok(productDto);
-
+                return NotFound();
             }
-            catch (Exception)
-            {
 
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                                                "Error retrieving data from the database");
-            }
+            var productCategory = await _productRepository.GetCategory(product.CategoryId);
+
+            var productDto = product.ConvertToDto(productCategory);
+
+            return Ok(productDto);
 
         }
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult<Product>> CreateProduct([FromBody] ProductToAddDto productToAddDto)
+        catch (Exception)
         {
-            try
-            {
-                var newProduct = await _productRepository.AddProduct(productToAddDto);
-                if (newProduct == null)
-                {
-                    return NoContent();
-                }
 
-                var productDto = newProduct.CategoryId;
-
-                return CreatedAtAction(nameof(CreateProduct), productDto);
-            }
-            catch (Exception)
-            {
-
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                                                "Error retrieving data from the database");
-            }
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                                            "Error retrieving data from the database");
         }
-        [HttpDelete]
-        public async Task<ActionResult<ProductDto>> DeleteItem(int id)
+
+    }
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    public async Task<ActionResult<Product>> PostProduct([FromBody] ProductToAddDto productToAddDto)
+    {
+        try
         {
-            try
+            var newProduct = await _productRepository.CreateProduct(productToAddDto);
+            if (newProduct == null)
             {
-                var product = await _productRepository.DeleteProduct(id);
-                if (product == null)
-                {
-                    return NotFound();
-                }
                 return NoContent();
             }
-            catch (Exception)
-            {
 
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                                                "Error retrieving data from the database");
+            var productDto = newProduct.CategoryId;
+
+            return CreatedAtAction(nameof(PostProduct), productDto);
+        }
+        catch (Exception)
+        {
+
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                                            "Error retrieving data from the database");
+        }
+    }
+    [HttpDelete]
+    public async Task<ActionResult<ProductDto>> DeleteItem(int id)
+    {
+        try
+        {
+            var product = await _productRepository.DeleteProduct(id);
+            if (product == null)
+            {
+                return NotFound();
             }
+            return NoContent();
+        }
+        catch (Exception)
+        {
+
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                                            "Error retrieving data from the database");
         }
     }
 }

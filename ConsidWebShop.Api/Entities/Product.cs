@@ -19,5 +19,5 @@ public class Product
     [MaxLength (500)]
     public int Qty { get; set; }
     public int CategoryId { get; set; }
-    public ProductCategory Category { get; set; }
+    public ProductCategory ?Category { get; set; }
 }
