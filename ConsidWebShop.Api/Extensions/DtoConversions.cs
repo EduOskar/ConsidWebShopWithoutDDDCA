@@ -144,6 +144,7 @@ public static class DtoConversions
 
         return orders.Select(order => new OrderDto
         {
+            Id = order.Id,
             OrderItemsId = order.OrderItemId,
             UserId = order.UserId,
             OrderPlacementTime = order.PlacementTime,
@@ -166,6 +167,7 @@ public static class DtoConversions
     {
         return new OrderDto
         {
+            Id = orders.Id,
             OrderItemsId = orders.OrderItemId,
              UserId = orders.UserId,
             OrderPlacementTime = orders.PlacementTime,
@@ -188,6 +190,7 @@ public static class DtoConversions
     {
         return new OrderDto
         {
+            Id = order.Id,
             OrderItemsId = order.OrderItems.FirstOrDefault()?.Id ?? 0, // Set appropriately
             UserId = order.UserId,
             OrderPlacementTime = order.PlacementTime,

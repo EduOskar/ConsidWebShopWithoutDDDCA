@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConsidWebShop.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231113174629_InitializeDb")]
+    [Migration("20231114101408_InitializeDb")]
     partial class InitializeDb
     {
         /// <inheritdoc />

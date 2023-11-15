@@ -11,11 +11,11 @@ using ConsidWebShop.Api.Repositories;
 namespace ConsidWebShop.Api.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-public class OrdersController : ControllerBase
+public class OrderController : ControllerBase
 {
     private readonly IOrderRepository _orderRepository;
 
-    public OrdersController(IOrderRepository orderRepository)
+    public OrderController(IOrderRepository orderRepository)
     {
         _orderRepository = orderRepository;
     }
@@ -40,7 +40,7 @@ public class OrdersController : ControllerBase
         }
     }
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<Order>> GetOrder(int id)
+    public async Task<ActionResult<OrderDto>> GetOrder(int id)
     {
         try
         {
@@ -64,7 +64,7 @@ public class OrdersController : ControllerBase
     }
     [HttpPost]
     [Route("PostOrderItem")]
-    public async Task<ActionResult<OrderItem>> PostOrderItem([FromBody] OrderItemToAddDto orderItemToAddDto)
+    public async Task<ActionResult<OrderItemDto>> PostOrderItem([FromBody] OrderItemToAddDto orderItemToAddDto)
     {
         try
         {
@@ -83,7 +83,8 @@ public class OrdersController : ControllerBase
         }
     }
     [HttpPost]
-    public async Task<ActionResult<Order>> PostOrder([FromBody] OrderToAddDto orderToAddDto)
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    public async Task<ActionResult<OrderDto>> PostOrder([FromBody] OrderToAddDto orderToAddDto)
     {
         var order = await _orderRepository.CreateOrder(orderToAddDto);
         if (order == null)
@@ -98,14 +99,14 @@ public class OrdersController : ControllerBase
 
  
     [HttpPut]
-    public IActionResult PutOrder(Order order, int id) 
+    public IActionResult PutOrder(OrderDto order, int id) 
     { 
         return Ok(order);
     }
 
 
     [HttpDelete("{id:int}")]
-    public async Task<ActionResult<Order>> DeleteOrder(int id)
+    public async Task<ActionResult<OrderDto>> DeleteOrder(int id)
     {
         var order = await _orderRepository.DeleteOrder(id);
         if (order == null)

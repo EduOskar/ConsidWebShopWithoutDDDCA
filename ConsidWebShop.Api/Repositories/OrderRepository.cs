@@ -23,11 +23,21 @@ public class OrderRepository : IOrderRepository
             .ToListAsync();
         return orderItems;
     }
+    public async Task<IEnumerable<Order>> GetOrders()
+    {
+        var order = await _dbContext.Orders.ToListAsync();
+        return order;
+    }
+
     public async Task<OrderItem> CreateOrderItem(OrderItemToAddDto orderItemToAddDto)
     {
+        var orders = new Order();
+
+        var order = await _dbContext.Orders.FindAsync(orders);
+
         var orderItem = new OrderItem
         {
-            OrderId = orderItemToAddDto.OrderId,
+            OrderId = order.Id,
             ProductId = orderItemToAddDto.ProductId,
             Qty = orderItemToAddDto.Qty,
         };
@@ -37,11 +47,7 @@ public class OrderRepository : IOrderRepository
 
         return result.Entity;
     }
-    public async Task<IEnumerable<Order>> GetOrders()
-    {
-        var order = await _dbContext.Orders.ToListAsync();
-        return order;
-    }
+
     public async Task<Order> GetOrder(int id)
     {
         var order = await _dbContext.Orders.FindAsync(id);

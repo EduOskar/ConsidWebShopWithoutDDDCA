@@ -19,7 +19,7 @@ public class ProductApiController : ControllerBase
         _productRepository = productRepository;
     }
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ProductDto>>> Items()
+    public async Task<ActionResult<IEnumerable<ProductDto>>> GetItems()
     {
         try
         {
@@ -43,7 +43,7 @@ public class ProductApiController : ControllerBase
         }
     }
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<ProductDto>> Item(int id)
+    public async Task<ActionResult<ProductDto>> GetItem(int id)
     {
         try
         {
@@ -70,7 +70,7 @@ public class ProductApiController : ControllerBase
     }
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<ActionResult<Product>> PostProduct([FromBody] ProductToAddDto productToAddDto)
+    public async Task<ActionResult<ProductDto>> PostItem([FromBody] ProductToAddDto productToAddDto)
     {
         try
         {
@@ -82,7 +82,7 @@ public class ProductApiController : ControllerBase
 
             var productDto = newProduct.CategoryId;
 
-            return CreatedAtAction(nameof(PostProduct), productDto);
+            return CreatedAtAction(nameof(GetItem), productDto);
         }
         catch (Exception)
         {

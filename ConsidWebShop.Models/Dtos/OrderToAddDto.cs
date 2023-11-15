@@ -6,16 +6,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsidWebShop.Models.Dtos
+namespace ConsidWebShop.Models.Dtos;
+
+public class OrderToAddDto
 {
-    public class OrderToAddDto
-    {
+    
+    public int Id { get; set; }
+    public DateTime PlacementTime { get; set; }
 
-        public DateTime PlacementTime { get; set; }
+    //ForeignKey for Customer
+    public int UserId { get; set; }
 
-        //ForeignKey for Customer
-        public int UserId { get; set; }
-
-        public int OrderItemId { get; set; }
-    }
+    public int OrderItemId { get; set; }
 }

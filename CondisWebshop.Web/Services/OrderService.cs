@@ -75,12 +75,12 @@ public class OrderService : IOrderService
         }
     }
 
-    public async Task<OrderDto> AddOrder(OrderDto orderDto)
+    public async Task<OrderDto> PostOrder(OrderToAddDto orderToAddDto)
     {
         try
         {
 
-            var response = await _httpClient.PostAsJsonAsync<OrderDto>("api/Order/PostOrders", orderDto);
+            var response = await _httpClient.PostAsJsonAsync<OrderToAddDto>("api/Order", orderToAddDto);
 
             if (response.IsSuccessStatusCode)
             {
@@ -102,9 +102,9 @@ public class OrderService : IOrderService
             throw;
         }
     }
-    public async Task<OrderItemDto> AddOrderItem(OrderItemToAddDto orderItemToAdd)
+    public async Task<OrderItemDto> PostOrderItem(OrderItemToAddDto orderItemToAdd)
     {
-        var response = await _httpClient.PostAsJsonAsync<OrderItemToAddDto>("api/Order/AddOrderItem", orderItemToAdd);
+        var response = await _httpClient.PostAsJsonAsync<OrderItemToAddDto>("api/Order/PostOrderItem", orderItemToAdd);
         if (response.IsSuccessStatusCode)
         {
             if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
